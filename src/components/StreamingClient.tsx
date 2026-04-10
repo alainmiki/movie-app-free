@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Play, X, Search, Filter, Clock, Calendar, Grid, List, Download, Star, ExternalLink, Film, Tv, MonitorPlay } from "lucide-react";
 import Image from "next/image";
@@ -66,6 +66,20 @@ export function StreamingClient({
   const [selectedMovie, setSelectedMovie] = useState<StreamingMovie | null>(null);
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && selectedMovie) {
+        setSelectedMovie(null);
+      }
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [selectedMovie]);
+
+  const closePlayer = () => {
+    setSelectedMovie(null);
+  };
 
   const handleImageLoad = (id: string) => {
     setLoadedImages((prev) => new Set(prev).add(id));
