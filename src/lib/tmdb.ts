@@ -1,4 +1,4 @@
-import { Movie, MovieDetails, Credits, MoviesResponse, SearchResponse } from "./types";
+import { Movie, MovieDetails, Credits, MoviesResponse, SearchResponse, WatchProviders, MovieVideos } from "./types";
 
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -159,6 +159,25 @@ export async function searchMovies(query: string, page: number = 1): Promise<Sea
       results: query ? MOCK_MOVIES : [],
       total_pages: 1,
       total_results: query ? 1 : 0,
+    };
+  }
+}
+
+export async function getWatchProviders(id: string): Promise<WatchProviders | null> {
+  try {
+    return await fetchTMDB<WatchProviders>(`/movie/${id}/watch/providers`);
+  } catch {
+    return null;
+  }
+}
+
+export async function getMovieVideos(id: string): Promise<MovieVideos> {
+  try {
+    return await fetchTMDB<MovieVideos>(`/movie/${id}/videos`, { language: "en-US" });
+  } catch {
+    return {
+      id: parseInt(id),
+      results: [],
     };
   }
 }

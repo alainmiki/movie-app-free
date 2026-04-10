@@ -1,11 +1,13 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { getMovieDetails, getMovieCredits, getSimilarMovies } from "@/lib/tmdb";
+import { getMovieDetails, getMovieCredits, getSimilarMovies, getWatchProviders, getMovieVideos } from "@/lib/tmdb";
 import { getBackdropUrl, getPosterUrl, formatRating } from "@/lib/types";
 import { Star, Clock, Calendar, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { MovieGrid } from "@/components/MovieGrid";
 import { CastList } from "@/components/CastList";
+import { WatchProvidersList } from "@/components/WatchProviders";
+import { MovieTrailer } from "@/components/MovieTrailer";
 
 interface MoviePageProps {
   params: Promise<{ id: string }>;
@@ -29,12 +31,14 @@ export async function generateMetadata({ params }: MoviePageProps) {
 export default async function MoviePage({ params }: MoviePageProps) {
   const { id } = await params;
 
-  let movie, credits, similarData;
+  let movie, credits, similarData, watchProviders, videos;
   try {
-    [movie, credits, similarData] = await Promise.all([
+    [movie, credits, similarData, watchProviders, videos] = await Promise.all([
       getMovieDetails(id),
       getMovieCredits(id),
       getSimilarMovies(id),
+      getWatchProviders(id),
+      getMovieVideos(id),
     ]);
   } catch {
     notFound();
@@ -147,6 +151,15 @@ export default async function MoviePage({ params }: MoviePageProps) {
                 <p className="text-[#9ca3af]">{director.name}</p>
               </div>
             )}
+
+            <div className="flex flex-wrap gap-4 pt-4">
+              <MovieTrailer videos={videos} />
+            </div>
+
+            <div className="pt-4">
+              <h2 className="text-xl font-semibold text-white mb-4">Where to Watch</h2>
+              <WatchProvidersList providers={watchProviders} />
+            </div>
           </div>
         </div>
 

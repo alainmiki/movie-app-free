@@ -57,6 +57,47 @@ export interface MoviesResponse {
   total_results: number;
 }
 
+export interface WatchProviders {
+  id: number;
+  results: {
+    [country: string]: {
+      link: string;
+      flatrate?: {
+        provider_id: number;
+        provider_name: string;
+        logo_path: string;
+      }[];
+      rent?: {
+        provider_id: number;
+        provider_name: string;
+        logo_path: string;
+        buy?: {
+          provider_id: number;
+          provider_name: string;
+          logo_path: string;
+        }[];
+      }[];
+      buy?: {
+        provider_id: number;
+        provider_name: string;
+        logo_path: string;
+      }[];
+    };
+  };
+}
+
+export interface MovieVideos {
+  id: number;
+  results: {
+    id: string;
+    key: string;
+    name: string;
+    site: string;
+    type: "Trailer" | "Teaser" | "Clip" | "Behind the Scenes" | "Featurette";
+    official: boolean;
+  }[];
+}
+
 export const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 export const POSTER_SIZES = {
   small: "w185",
