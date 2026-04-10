@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { SearchBar } from "@/components/SearchBar";
 import { MovieGrid } from "@/components/MovieGrid";
 import { searchMovies } from "@/lib/tmdb";
@@ -11,26 +11,27 @@ import { SkeletonCard } from "@/components/Skeleton";
 function SearchContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
-  const page = parseInt(searchParams.get("page") || "1", 10);
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  return <SearchResults query={query} page={page} />;
-}
-
-async function SearchResults({ query, page }: { query: string; page: number }) {
-  let movies: Movie[] = [];
-  let loading = false;
-
-  if (query) {
-    loading = true;
-    try {
-      const data = await searchMovies(query, page);
-      movies = data.results;
-    } catch (error) {
-      console.error("Search error:", error);
-    } finally {
-      loading = false;
+  useEffect(() => {
+    async function fetchSearch() {
+      if (!query) {
+        setMovies([]);
+        return;
+      }
+      setLoading(true);
+      try {
+        const data = await searchMovies(query, 1);
+        setMovies(data.results);
+      } catch (error) {
+        console.error("Search error:", error);
+      } finally {
+        setLoading(false);
+      }
     }
-  }
+    fetchSearch();
+  }, [query]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
