@@ -2,9 +2,9 @@
 
 ## Current State
 
-**Project Status**: ✅ Complete - Full movie app built
+**Project Status**: ✅ Complete - Full movie app with free movies section
 
-The Cineverse movie app is fully functional with TMDB API integration. It displays trending, popular, and top-rated movies. Without an API key, it falls back to demo data.
+The Cineverse movie app is fully functional with TMDB API integration. It displays trending, popular, and top-rated movies. Added a new Free Movies section with Internet Archive and YouTube integration.
 
 ## Recently Completed
 
@@ -24,6 +24,10 @@ The Cineverse movie app is fully functional with TMDB API integration. It displa
 - [x] Movie details page with full info, cast, and similar movies
 - [x] Next.js image config for TMDB
 - [x] Build passes successfully
+- [x] **Free Movies page with tabbed interface** (Internet Archive + YouTube)
+- [x] **Lazy loading images with loading states**
+- [x] **Integrated video player modal for YouTube movies**
+- [x] **Thumbnail support for archive cards**
 
 ## Current Structure
 
@@ -32,9 +36,11 @@ The Cineverse movie app is fully functional with TMDB API integration. It displa
 | `src/app/page.tsx` | Home page with hero + movie grids | ✅ Complete |
 | `src/app/search/page.tsx` | Search page with debounced search | ✅ Complete |
 | `src/app/movie/[id]/page.tsx` | Movie details with cast & similar | ✅ Complete |
+| `src/app/free/page.tsx` | Free movies (Archive + YouTube) | ✅ Complete |
 | `src/components/` | UI components | ✅ Complete |
 | `src/lib/types.ts` | TypeScript interfaces | ✅ Complete |
 | `src/lib/tmdb.ts` | API functions with fallback | ✅ Complete |
+| `src/lib/archive.ts` | Internet Archive + YouTube data | ✅ Complete |
 | `SPEC.md` | Full specification | ✅ Complete |
 
 ## Features
@@ -43,13 +49,20 @@ The Cineverse movie app is fully functional with TMDB API integration. It displa
    - Hero section with featured movie
    - Popular movies grid
    - Top rated movies grid
+   - Free Movies link in navigation
 
-2. **Search Page**
+2. **Free Movies Page**
+   - Tabbed interface (Internet Archive / YouTube)
+   - Lazy loading images with shimmer effect
+   - Video player modal for YouTube
+   - Thumbnail previews from Archive.org
+
+3. **Search Page**
    - Debounced search (300ms)
    - Real-time results
    - Loading states
 
-3. **Movie Details**
+4. **Movie Details**
    - Backdrop image with gradient
    - Poster, title, rating, runtime
    - Genre tags
@@ -75,7 +88,8 @@ Set `NEXT_PUBLIC_TMDB_API_KEY` in environment to use real TMDB API.
 | Date | Changes |
 |------|---------|
 | Initial | Template created with base setup |
-| Now | Full Cineverse movie app built |
+| Earlier | Full Cineverse movie app built |
+| Today | Added Free Movies page with tabbed interface, YouTube videos, lazy loading, and video player modal |
 
 ## Quick Start
 
