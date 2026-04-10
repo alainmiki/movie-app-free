@@ -35,6 +35,9 @@ The Cineverse movie app is fully functional with TMDB API integration. It displa
 - [x] **12 curated Internet Archive classic movies with download URLs**
 - [x] **Download buttons for offline viewing**
 - [x] **Video player modal with download option**
+- [x] **New Streaming page with Pluto TV + Tubi integration**
+- [x] **Clean professional UI with tabs and filters**
+- [x] **48+ curated movies across 4 platforms**
 
 ## Current Structure
 
@@ -43,12 +46,13 @@ The Cineverse movie app is fully functional with TMDB API integration. It displa
 | `src/app/page.tsx` | Home page with hero + movie grids | ✅ Complete |
 | `src/app/search/page.tsx` | Search page with debounced search | ✅ Complete |
 | `src/app/movie/[id]/page.tsx` | Movie details with cast & similar | ✅ Complete |
-| `src/app/free/page.tsx` | Free movies (Archive + YouTube) | ✅ Complete |
+| `src/app/free/page.tsx` | Public domain movies (Archive + YouTube) | ✅ Complete |
+| `src/app/streaming/page.tsx` | Stream movies (Pluto TV + Tubi) | ✅ Complete |
 | `src/components/` | UI components | ✅ Complete |
 | `src/lib/types.ts` | TypeScript interfaces | ✅ Complete |
 | `src/lib/tmdb.ts` | API functions with fallback | ✅ Complete |
 | `src/lib/archive.ts` | Internet Archive + YouTube data | ✅ Complete |
-| `SPEC.md` | Full specification | ✅ Complete |
+| `src/lib/streaming.ts` | Pluto TV + Tubi movie data | ✅ Complete |
 
 ## Features
 

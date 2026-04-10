@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Film, Search, Play } from "lucide-react";
+import { Film, Search, Play, Tv } from "lucide-react";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -39,6 +39,17 @@ export function Navbar() {
             >
               <Search className="w-4 h-4" />
               Search
+            </Link>
+            <Link
+              href="/streaming"
+              className={`flex items-center gap-2 text-sm font-medium transition-colors ${
+                pathname === "/streaming"
+                  ? "text-[#ff6b6b]"
+                  : "text-[#9ca3af] hover:text-white"
+              }`}
+            >
+              <Tv className="w-4 h-4" />
+              Stream
             </Link>
             <Link
               href="/free"
