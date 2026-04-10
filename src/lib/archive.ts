@@ -10,12 +10,15 @@ export interface FreeMovie {
   source: "archive" | "youtube";
   duration?: string;
   genre?: string;
+  downloadUrl?: string;
+  downloadQuality?: string;
 }
 
 export interface ArchiveMovieFile {
   name: string;
   format?: string;
   url?: string;
+  size?: string;
 }
 
 export interface ArchiveMovie {
@@ -49,12 +52,163 @@ export interface ArchiveSearchResponse {
 }
 
 export async function getFreeMovies(page: number = 1): Promise<FreeMovie[]> {
+  const curatedMovies: FreeMovie[] = [
+    {
+      id: "TheGreatTrainRobbery_1903",
+      title: "The Great Train Robbery",
+      description: "A group of thieves steal goods from a train in this classic silent western",
+      year: "1903",
+      thumbnail: "https://archive.org/services/img/TheGreatTrainRobbery",
+      source: "archive",
+      videoUrl: "https://archive.org/embed/TheGreatTrainRobbery",
+      downloadUrl: "https://archive.org/download/TheGreatTrainRobbery/TheGreatTrainRobbery_512kb.mp4",
+      genre: "action",
+      duration: "12 min",
+    },
+    {
+      id: "Metropolis_1927",
+      title: "Metropolis",
+      description: "Fritz Lang's dystopian masterpiece about a futuristic city",
+      year: "1927",
+      thumbnail: "https://archive.org/services/img/Metropolis_1927",
+      source: "archive",
+      videoUrl: "https://archive.org/embed/Metropolis_1927",
+      downloadUrl: "https://archive.org/download/Metropolis_1927/Metropolis_1927.mp4",
+      genre: "drama",
+      duration: "2h 33m",
+    },
+    {
+      id: "Nosferatu_1922",
+      title: "Nosferatu",
+      description: "The iconic vampire film, an unauthorized adaptation of Dracula",
+      year: "1922",
+      thumbnail: "https://archive.org/services/img/Nosferatu_1922",
+      source: "archive",
+      videoUrl: "https://archive.org/embed/Nosferatu_1922",
+      downloadUrl: "https://archive.org/download/Nosferatu_1922/Nosferatu_1922.mp4",
+      genre: "horror",
+      duration: "1h 34m",
+    },
+    {
+      id: "TheCabinetOfDrCaligari",
+      title: "The Cabinet of Dr. Caligari",
+      description: "A landmark German Expressionist horror film",
+      year: "1920",
+      thumbnail: "https://archive.org/services/img/TheCabinetOfDrCaligari",
+      source: "archive",
+      videoUrl: "https://archive.org/embed/TheCabinetOfDrCaligari",
+      downloadUrl: "https://archive.org/download/TheCabinetOfDrCaligari/TheCabinetOfDrCaligari.mp4",
+      genre: "horror",
+      duration: "1h 16m",
+    },
+    {
+      id: "ThePhantomOfTheOpera_1925",
+      title: "The Phantom of the Opera",
+      description: "The legendary silent horror film starring Lon Chaney",
+      year: "1925",
+      thumbnail: "https://archive.org/services/img/ThePhantomOfTheOpera_1925",
+      source: "archive",
+      videoUrl: "https://archive.org/embed/ThePhantomOfTheOpera_1925",
+      downloadUrl: "https://archive.org/download/ThePhantomOfTheOpera_1925/ThePhantomOfTheOpera_1925.mp4",
+      genre: "horror",
+      duration: "1h 43m",
+    },
+    {
+      id: "BattleshipPotemkin",
+      title: "Battleship Potemkin",
+      description: "Sergei Eisenstein's revolutionary Soviet propaganda film",
+      year: "1925",
+      thumbnail: "https://archive.org/services/img/BattleshipPotemkin",
+      source: "archive",
+      videoUrl: "https://archive.org/embed/BattleshipPotemkin",
+      downloadUrl: "https://archive.org/download/BattleshipPotemkin/BattleshipPotemkin.mp4",
+      genre: "drama",
+      duration: "1h 15m",
+    },
+    {
+      id: "TheGeneral_1926",
+      title: "The General",
+      description: "Buster Keaton's masterpiece about a train engineer during the Civil War",
+      year: "1926",
+      thumbnail: "https://archive.org/services/img/TheGeneral_1926",
+      source: "archive",
+      videoUrl: "https://archive.org/embed/TheGeneral_1926",
+      downloadUrl: "https://archive.org/download/TheGeneral_1926/TheGeneral_1926.mp4",
+      genre: "comedy",
+      duration: "1h 19m",
+    },
+    {
+      id: "SafetyLast_1923",
+      title: "Safety Last!",
+      description: "Buster Keaton's iconic clock tower stunt scene",
+      year: "1923",
+      thumbnail: "https://archive.org/services/img/SafetyLast_1923",
+      source: "archive",
+      videoUrl: "https://archive.org/embed/SafetyLast_1923",
+      downloadUrl: "https://archive.org/download/SafetyLast_1923/SafetyLast_1923.mp4",
+      genre: "comedy",
+      duration: "1h 11m",
+    },
+    {
+      id: "TheKid_1921",
+      title: "The Kid",
+      description: "Charlie Chaplin's classic about a tramp and an abandoned child",
+      year: "1921",
+      thumbnail: "https://archive.org/services/img/TheKid_1921",
+      source: "archive",
+      videoUrl: "https://archive.org/embed/TheKid_1921",
+      downloadUrl: "https://archive.org/download/TheKid_1921/TheKid_1921.mp4",
+      genre: "drama",
+      duration: "1h 8m",
+    },
+    {
+      id: "TheGoldRush_1925",
+      title: "The Gold Rush",
+      description: "Chaplin's romantic comedy set in the Klondike",
+      year: "1925",
+      thumbnail: "https://archive.org/services/img/TheGoldRush_1925",
+      source: "archive",
+      videoUrl: "https://archive.org/embed/TheGoldRush_1925",
+      downloadUrl: "https://archive.org/download/TheGoldRush_1925/TheGoldRush_1925.mp4",
+      genre: "comedy",
+      duration: "1h 35m",
+    },
+    {
+      id: "TheHunchbackOfNotre Dame_1923",
+      title: "The Hunchback of Notre Dame",
+      description: "Lon Chaney's powerful performance as Quasimodo",
+      year: "1923",
+      thumbnail: "https://archive.org/services/img/TheHunchbackOfNotre Dame_1923",
+      source: "archive",
+      videoUrl: "https://archive.org/embed/TheHunchbackOfNotre Dame_1923",
+      downloadUrl: "https://archive.org/download/TheHunchbackOfNotre Dame_1923/TheHunchbackOfNotre Dame_1923.mp4",
+      genre: "drama",
+      duration: "1h 43m",
+    },
+    {
+      id: "TheThiefOfBaghdad_1924",
+      title: "The Thief of Bagdad",
+      description: "An Arabian Nights fantasy adventure",
+      year: "1924",
+      thumbnail: "https://archive.org/services/img/TheThiefOfBaghdad_1924",
+      source: "archive",
+      videoUrl: "https://archive.org/embed/TheThiefOfBaghdad_1924",
+      downloadUrl: "https://archive.org/download/TheThiefOfBaghdad_1924/TheThiefOfBaghdad_1924.mp4",
+      genre: "action",
+      duration: "2h 15m",
+    },
+  ];
+
+  if (page === 1) {
+    return curatedMovies;
+  }
+
   const params = new URLSearchParams({
     q: "mediatype:movies AND (format:Vimeo MP4 OR format:MP4)",
     fl: "identifier,title,description,date,downloads",
     sort: "downloads desc",
     rows: "30",
-    page: page.toString(),
+    page: (page - 1).toString(),
     output: "json",
   });
 
@@ -76,9 +230,10 @@ export async function getFreeMovies(page: number = 1): Promise<FreeMovie[]> {
       thumbnail: `https://archive.org/services/img/${movie.identifier}`,
       source: "archive" as const,
       videoUrl: `https://archive.org/embed/${movie.identifier}`,
+      downloadUrl: `https://archive.org/download/${movie.identifier}/${movie.identifier}_512kb.mp4`,
     }));
   } catch {
-    return FALLBACK_MOVIES;
+    return [];
   }
 }
 

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Play, X, Search, Filter, Clock, Calendar, Grid, List, Star } from "lucide-react";
+import { Play, X, Search, Filter, Clock, Calendar, Grid, List, Star, Download, ExternalLink } from "lucide-react";
 import Image from "next/image";
 
 interface FreeMovie {
@@ -15,6 +15,8 @@ interface FreeMovie {
   source: "archive" | "youtube";
   duration?: string;
   genre?: string;
+  downloadUrl?: string;
+  downloadQuality?: string;
 }
 
 interface FreeMoviesClientProps {
@@ -238,11 +240,25 @@ export function FreeMoviesClient({ initialTab = "archive", initialQuery = "", ar
                     <p className="text-xs text-[#9ca3af] line-clamp-2 mt-1.5 h-10">
                       {movie.description}
                     </p>
-                    {movie.genre && (
-                      <span className="inline-block mt-2 px-2 py-0.5 bg-[#2a2a2a] rounded text-xs text-[#9ca3af]">
-                        {movie.genre}
-                      </span>
-                    )}
+                    <div className="flex items-center justify-between mt-2">
+                      {movie.genre && (
+                        <span className="px-2 py-0.5 bg-[#2a2a2a] rounded text-xs text-[#9ca3af]">
+                          {movie.genre}
+                        </span>
+                      )}
+                      {movie.downloadUrl && (
+                        <a
+                          href={movie.downloadUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex items-center gap-1 px-2 py-1 bg-[#ff6b6b]/20 hover:bg-[#ff6b6b]/30 text-[#ff6b6b] rounded text-xs font-medium transition-colors"
+                        >
+                          <Download className="w-3 h-3" />
+                          Download
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -299,6 +315,18 @@ export function FreeMoviesClient({ initialTab = "archive", initialQuery = "", ar
                       {movie.duration && <span className="flex items-center gap-1"><Clock className="w-4 h-4" />{movie.duration}</span>}
                       {movie.genre && <span className="px-2 py-0.5 bg-[#2a2a2a] rounded text-xs">{movie.genre}</span>}
                     </div>
+                    {movie.downloadUrl && (
+                      <a
+                        href={movie.downloadUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-[#ff6b6b]/20 hover:bg-[#ff6b6b]/30 text-[#ff6b6b] rounded-lg text-sm font-medium transition-colors"
+                      >
+                        <Download className="w-4 h-4" />
+                        Download
+                      </a>
+                    )}
                   </div>
                 </div>
               ))}
@@ -345,11 +373,24 @@ export function FreeMoviesClient({ initialTab = "archive", initialQuery = "", ar
                     {selectedMovie.genre && <span className="px-2 py-0.5 bg-[#2a2a2a] rounded text-sm">{selectedMovie.genre}</span>}
                   </div>
                 </div>
-                <span className={`px-3 py-1.5 rounded-full text-sm font-bold text-white ${
-                  activeTab === "archive" ? "bg-[#ff6b6b]" : "bg-red-600"
-                }`}>
-                  {selectedMovie.source === "archive" ? "Internet Archive" : "YouTube"}
-                </span>
+                <div className="flex items-center gap-2">
+                  {selectedMovie.downloadUrl && (
+                    <a
+                      href={selectedMovie.downloadUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 bg-[#ff6b6b] hover:bg-[#ff5252] text-white rounded-lg font-medium transition-colors"
+                    >
+                      <Download className="w-4 h-4" />
+                      Download
+                    </a>
+                  )}
+                  <span className={`px-3 py-1.5 rounded-full text-sm font-bold text-white ${
+                    activeTab === "archive" ? "bg-[#ff6b6b]" : "bg-red-600"
+                  }`}>
+                    {selectedMovie.source === "archive" ? "Internet Archive" : "YouTube"}
+                  </span>
+                </div>
               </div>
               {selectedMovie.description && (
                 <p className="text-[#9ca3af] mt-4">{selectedMovie.description}</p>

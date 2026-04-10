@@ -32,6 +32,9 @@ The Cineverse movie app is fully functional with TMDB API integration. It displa
 - [x] **Genre filters and search functionality**
 - [x] **12 classic public domain movies from YouTube**
 - [x] **Improved styling with gradients and animations**
+- [x] **12 curated Internet Archive classic movies with download URLs**
+- [x] **Download buttons for offline viewing**
+- [x] **Video player modal with download option**
 
 ## Current Structure
 
