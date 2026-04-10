@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Play, ExternalLink, X, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Play, ExternalLink, X, Loader2, Search } from "lucide-react";
 import Image from "next/image";
 
 interface FreeMovie {
@@ -15,17 +16,26 @@ interface FreeMovie {
 }
 
 interface FreeMoviesClientProps {
+  initialTab?: "archive" | "youtube";
+  initialQuery?: string;
   archiveMovies: FreeMovie[];
   youtubeMovies: FreeMovie[];
 }
 
-export function FreeMoviesClient({ archiveMovies, youtubeMovies }: FreeMoviesClientProps) {
-  const [activeTab, setActiveTab] = useState<"archive" | "youtube">("archive");
+export function FreeMoviesClient({ initialTab = "archive", initialQuery = "", archiveMovies, youtubeMovies }: FreeMoviesClientProps) {
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<"archive" | "youtube">(initialTab);
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [selectedMovie, setSelectedMovie] = useState<FreeMovie | null>(null);
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
 
   const handleImageLoad = (id: string) => {
     setLoadedImages((prev) => new Set(prev).add(id));
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push(`/free?tab=${activeTab}&query=${encodeURIComponent(searchQuery)}`);
   };
 
   const currentMovies = activeTab === "archive" ? archiveMovies : youtubeMovies;
@@ -80,6 +90,19 @@ export function FreeMoviesClient({ archiveMovies, youtubeMovies }: FreeMoviesCli
           )}
         </button>
       </div>
+
+      <form onSubmit={handleSearch} className="relative mb-8">
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9ca3af]" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={`Search ${activeTab === "archive" ? "Internet Archive" : "YouTube"}...`}
+            className="w-full h-12 pl-12 pr-4 bg-[#1f1f1f] border border-[#2a2a2a] rounded-xl text-white placeholder-[#9ca3af] focus:outline-none focus:border-[#ff6b6b] transition-colors"
+          />
+        </div>
+      </form>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
         {currentMovies.map((movie) => (

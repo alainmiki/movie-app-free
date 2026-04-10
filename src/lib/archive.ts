@@ -48,8 +48,42 @@ export interface ArchiveSearchResponse {
 
 export async function getFreeMovies(page: number = 1): Promise<FreeMovie[]> {
   const params = new URLSearchParams({
-    q: "mediatype:movies AND format:Vimeo MP4",
-    fl: "identifier,title,description,date,runtime,creator,downloads",
+    q: "mediatype:movies AND (format:Vimeo MP4 OR format:MP4)",
+    fl: "identifier,title,description,date,downloads",
+    sort: "downloads desc",
+    rows: "30",
+    page: page.toString(),
+    output: "json",
+  });
+
+  try {
+    const response = await fetch(`${BASE_URL}?${params.toString()}`, {
+      next: { revalidate: 3600 },
+    });
+
+    if (!response.ok) {
+      throw new Error("Archive Error");
+    }
+
+    const data: ArchiveSearchResponse = await response.json();
+    return data.response.docs.map((movie) => ({
+      id: movie.identifier,
+      title: movie.title,
+      description: movie.description || "",
+      year: movie.date?.split("-")[0] || "",
+      thumbnail: `https://archive.org/services/img/${movie.identifier}`,
+      source: "archive" as const,
+      videoUrl: `https://archive.org/embed/${movie.identifier}`,
+    }));
+  } catch {
+    return FALLBACK_MOVIES;
+  }
+}
+
+export async function searchArchiveMovies(query: string, page: number = 1): Promise<FreeMovie[]> {
+  const params = new URLSearchParams({
+    q: `mediatype:movies AND (title:${query} OR description:${query})`,
+    fl: "identifier,title,description,date,downloads",
     sort: "downloads desc",
     rows: "20",
     page: page.toString(),
@@ -73,9 +107,10 @@ export async function getFreeMovies(page: number = 1): Promise<FreeMovie[]> {
       year: movie.date?.split("-")[0] || "",
       thumbnail: `https://archive.org/services/img/${movie.identifier}`,
       source: "archive" as const,
+      videoUrl: `https://archive.org/embed/${movie.identifier}`,
     }));
   } catch {
-    return FALLBACK_MOVIES;
+    return [];
   }
 }
 

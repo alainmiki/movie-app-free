@@ -1,5 +1,9 @@
-import { getFreeMovies, getYoutubeFreeMovies } from "@/lib/archive";
+import { getFreeMovies, searchArchiveMovies, getYoutubeFreeMovies } from "@/lib/archive";
 import { FreeMoviesClient } from "@/components/FreeMoviesClient";
+
+interface FreePageProps {
+  searchParams: Promise<{ tab?: string; query?: string }>;
+}
 
 export async function generateMetadata() {
   return {
@@ -8,14 +12,28 @@ export async function generateMetadata() {
   };
 }
 
-export default async function FreeMoviesPage() {
-  const [archiveMovies, youtubeMovies] = await Promise.all([
-    getFreeMovies(),
-    getYoutubeFreeMovies(),
-  ]);
+export default async function FreeMoviesPage({ searchParams }: FreePageProps) {
+  const { tab, query } = await searchParams;
+  const activeTab = tab === "youtube" ? "youtube" : "archive";
+
+  let archiveMovies = await getFreeMovies();
+  let youtubeMovies = await getYoutubeFreeMovies();
+
+  if (query && activeTab === "youtube") {
+    youtubeMovies = youtubeMovies.filter(m => 
+      m.title.toLowerCase().includes(query.toLowerCase()) ||
+      m.description.toLowerCase().includes(query.toLowerCase())
+    );
+  }
+
+  if (query && activeTab === "archive") {
+    archiveMovies = await searchArchiveMovies(query);
+  }
 
   return (
     <FreeMoviesClient 
+      initialTab={activeTab}
+      initialQuery={query || ""}
       archiveMovies={archiveMovies} 
       youtubeMovies={youtubeMovies} 
     />
