@@ -1,9 +1,8 @@
-import { getFreeMovies, getYoutubeFreeMovies } from "@/lib/archive";
-import { getPlutoMovies, getTubiMovies, StreamingMovie } from "@/lib/streaming";
+import { getPlutoMovies, getTubiMovies, getArchiveMovies, getYoutubeMovies, searchMovies, getMoviesByGenre, StreamingMovie } from "@/lib/streaming";
 import { StreamingClient } from "@/components/StreamingClient";
 
 interface StreamingPageProps {
-  searchParams: Promise<{ tab?: string; query?: string; genre?: string }>;
+  searchParams: Promise<{ tab?: string; query?: string; genre?: string; page?: string }>;
 }
 
 export async function generateMetadata() {
@@ -14,77 +13,74 @@ export async function generateMetadata() {
 }
 
 export default async function StreamingPage({ searchParams }: StreamingPageProps) {
-  const { tab, query, genre } = await searchParams;
+  const { tab, query, genre, page } = await searchParams;
   const activeTab = tab || "all";
   const filterGenre = genre || "all";
+  const currentPage = parseInt(page || "1", 10);
+  const limit = 20;
 
-  const [archiveMovies, youtubeMovies, plutoMovies, tubiMovies] = await Promise.all([
-    getFreeMovies(),
-    getYoutubeFreeMovies(),
-    getPlutoMovies(),
-    getTubiMovies(),
-  ]);
-
-  const allMovies: StreamingMovie[] = [
-    ...archiveMovies.map((m) => ({
-      id: m.id,
-      title: m.title,
-      description: m.description,
-      year: m.year,
-      thumbnail: m.thumbnail,
-      videoUrl: m.videoUrl,
-      source: "archive" as const,
-      duration: m.duration,
-      genre: m.genre,
-      downloadUrl: m.downloadUrl,
-      type: "movie" as const,
-    })),
-    ...youtubeMovies.map((m) => ({
-      id: m.id,
-      title: m.title,
-      description: m.description,
-      year: m.year,
-      thumbnail: m.thumbnail,
-      videoUrl: m.videoUrl,
-      source: "youtube" as const,
-      duration: m.duration,
-      genre: m.genre,
-      type: "movie" as const,
-    })),
-    ...plutoMovies,
-    ...tubiMovies,
-  ];
-
-  let filteredMovies = allMovies;
-  
-  if (activeTab !== "all") {
-    filteredMovies = allMovies.filter(m => m.source === activeTab);
-  }
+  let movies: StreamingMovie[] = [];
+  let total = 0;
 
   if (query) {
-    const q = query.toLowerCase();
-    filteredMovies = filteredMovies.filter(m => 
-      m.title.toLowerCase().includes(q) || 
-      m.description.toLowerCase().includes(q)
-    );
+    const result = await searchMovies(query, activeTab, currentPage, limit);
+    movies = result.movies;
+    total = result.total;
+  } else if (filterGenre !== "all") {
+    const result = await getMoviesByGenre(filterGenre, activeTab, currentPage, limit);
+    movies = result.movies;
+    total = result.total;
+  } else {
+    const [pluto, tubi, archive, youtube] = await Promise.all([
+      getPlutoMovies(currentPage, limit),
+      getTubiMovies(currentPage, limit),
+      getArchiveMovies(currentPage, limit),
+      getYoutubeMovies(currentPage, limit),
+    ]);
+
+    let allMovies: StreamingMovie[] = [];
+    
+    if (activeTab === "all") {
+      allMovies = [...pluto.movies, ...tubi.movies, ...archive.movies, ...youtube.movies];
+      total = pluto.total + tubi.total + archive.total + youtube.total;
+    } else if (activeTab === "pluto") {
+      allMovies = pluto.movies;
+      total = pluto.total;
+    } else if (activeTab === "tubi") {
+      allMovies = tubi.movies;
+      total = tubi.total;
+    } else if (activeTab === "archive") {
+      allMovies = archive.movies;
+      total = archive.total;
+    } else if (activeTab === "youtube") {
+      allMovies = youtube.movies;
+      total = youtube.total;
+    }
+    
+    movies = allMovies;
   }
 
-  if (filterGenre !== "all") {
-    filteredMovies = filteredMovies.filter(m => m.genre === filterGenre);
-  }
+  const totalPluto = 400;
+  const totalTubi = 400;
+  const totalArchive = 400;
+  const totalYoutube = 400;
+  const totalAll = totalPluto + totalTubi + totalArchive + totalYoutube;
 
   return (
     <StreamingClient 
       initialTab={activeTab}
       initialQuery={query || ""}
       initialGenre={filterGenre}
-      movies={filteredMovies}
+      initialPage={currentPage}
+      movies={movies}
+      totalMovies={total}
+      totalPages={Math.ceil(total / limit)}
       allMoviesCount={{
-        all: allMovies.length,
-        archive: archiveMovies.length,
-        youtube: youtubeMovies.length,
-        pluto: plutoMovies.length,
-        tubi: tubiMovies.length,
+        all: totalAll,
+        archive: totalArchive,
+        youtube: totalYoutube,
+        pluto: totalPluto,
+        tubi: totalTubi,
       }}
     />
   );

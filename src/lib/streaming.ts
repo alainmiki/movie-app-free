@@ -1,4 +1,4 @@
-const TUBI_API = "https://tubi.io/api/tubi/";
+import { Movie } from "@/lib/types";
 
 export interface StreamingMovie {
   id: string;
@@ -15,346 +15,246 @@ export interface StreamingMovie {
   type: "movie" | "tv";
 }
 
-const CURATED_MOVIES: StreamingMovie[] = [
-  {
-    id: "pluto-1",
-    title: "Dog",
-    description: "A army ranger is paired with a military dog and they go on a journey to find a family.",
-    year: "2021",
-    thumbnail: "https://image.tmdb.org/t/p/w500/uxzzxijgPIY7slzFvMotPv8wjKA.jpg",
-    videoUrl: "https://pluto.tv/on-demand/films/dog-2021-01-01/",
-    source: "pluto",
-    genre: "comedy",
-    duration: "1h 42m",
-    rating: "PG-13",
-    type: "movie",
-  },
-  {
-    id: "pluto-2",
-    title: "The Witches",
-    description: "A young boy stumbles upon a coven of witches and must stop them from turning children into mice.",
-    year: "1990",
-    thumbnail: "https://image.tmdb.org/t/p/w500/u6FsKaR0jCPQfjF6CZ0dPE8Uysj.jpg",
-    videoUrl: "https://pluto.tv/on-demand/films/the-witches-1990-01-01/",
-    source: "pluto",
-    genre: "family",
-    duration: "1h 46m",
-    rating: "PG",
-    type: "movie",
-  },
-  {
-    id: "pluto-3",
-    title: "Mortal Kombat",
-    description: "A group of fighters must defeat an evil organization to save the world.",
-    year: "2021",
-    thumbnail: "https://image.tmdb.org/t/p/w500/pKQ0EixPXVN5mHnVKHFHDqVewsX.jpg",
-    videoUrl: "https://pluto.tv/on-demand/films/mortal-kombat-2021-01-01/",
-    source: "pluto",
-    genre: "action",
-    duration: "1h 50m",
-    rating: "R",
-    type: "movie",
-  },
-  {
-    id: "pluto-4",
-    title: "The Last Samurai",
-    description: "A veteran soldier embraces the way of the samurai after being captured in Japan.",
-    year: "2003",
-    thumbnail: "https://image.tmdb.org/t/p/w500/1M8UvYhI96qbc7qTCQs0pY7T7bJ.jpg",
-    videoUrl: "https://pluto.tv/on-demand/films/the-last-samurai-2003-01-01/",
-    source: "pluto",
-    genre: "action",
-    duration: "2h 34m",
-    rating: "R",
-    type: "movie",
-  },
-  {
-    id: "pluto-5",
-    title: "Titanic",
-    description: "A young couple fall in love aboard the ill-fated Titanic ship.",
-    year: "1997",
-    thumbnail: "https://image.tmdb.org/t/p/w500/9xk2FRJO2qDvT3Xh8hBTl2d8j1i.jpg",
-    videoUrl: "https://pluto.tv/on-demand/films/titanic-1997-01-01/",
-    source: "pluto",
-    genre: "drama",
-    duration: "3h 14m",
-    rating: "PG-13",
-    type: "movie",
-  },
-  {
-    id: "pluto-6",
-    title: "The Matrix",
-    description: "A computer hacker learns about the true nature of his reality and his role in the war against its controllers.",
-    year: "1999",
-    thumbnail: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
-    videoUrl: "https://pluto.tv/on-demand/films/the-matrix-1999-01-01/",
-    source: "pluto",
-    genre: "sci-fi",
-    duration: "2h 16m",
-    rating: "R",
-    type: "movie",
-  },
-  {
-    id: "pluto-7",
-    title: "Inception",
-    description: "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea.",
-    year: "2010",
-    thumbnail: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
-    videoUrl: "https://pluto.tv/on-demand/films/inception-2010-01-01/",
-    source: "pluto",
-    genre: "sci-fi",
-    duration: "2h 28m",
-    rating: "PG-13",
-    type: "movie",
-  },
-  {
-    id: "pluto-8",
-    title: "John Wick",
-    description: "An ex-hit-man comes out of retirement to track down the gangsters that killed his dog.",
-    year: "2014",
-    thumbnail: "https://image.tmdb.org/t/p/w500/fZPSd91yGE9fCcCe6OoQr6E3Bev.jpg",
-    videoUrl: "https://pluto.tv/on-demand/films/john-wick-2014-01-01/",
-    source: "pluto",
-    genre: "action",
-    duration: "1h 41m",
-    rating: "R",
-    type: "movie",
-  },
-  {
-    id: "pluto-9",
-    title: "Mad Max: Fury Road",
-    description: "A woman rebels against a tyrannical ruler in a post-apocalyptic wasteland.",
-    year: "2015",
-    thumbnail: "https://image.tmdb.org/t/p/w500/8tZYtuWezp8JbcsvHYO0O46tFbo.jpg",
-    videoUrl: "https://pluto.tv/on-demand/films/mad-max-fury-road-2015-01-01/",
-    source: "pluto",
-    genre: "action",
-    duration: "2h",
-    rating: "R",
-    type: "movie",
-  },
-  {
-    id: "pluto-10",
-    title: "The Godfather",
-    description: "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
-    year: "1972",
-    thumbnail: "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
-    videoUrl: "https://pluto.tv/on-demand/films/the-godfather-1972-01-01/",
-    source: "pluto",
-    genre: "drama",
-    duration: "2h 55m",
-    rating: "R",
-    type: "movie",
-  },
-  {
-    id: "pluto-11",
-    title: "Pulp Fiction",
-    description: "The lives of two mob hitmen, a boxer, and a pair of diner bandits intertwine in four tales of violence and redemption.",
-    year: "1994",
-    thumbnail: "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
-    videoUrl: "https://pluto.tv/on-demand/films/pulp-fiction-1994-01-01/",
-    source: "pluto",
-    genre: "crime",
-    duration: "2h 34m",
-    rating: "R",
-    type: "movie",
-  },
-  {
-    id: "pluto-12",
-    title: "Interstellar",
-    description: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
-    year: "2014",
-    thumbnail: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
-    videoUrl: "https://pluto.tv/on-demand/films/interstellar-2014-01-01/",
-    source: "pluto",
-    genre: "sci-fi",
-    duration: "2h 49m",
-    rating: "PG-13",
-    type: "movie",
-  },
-];
+const TMDB_IMG = "https://image.tmdb.org/t/p";
 
-const TUBI_MOVIES: StreamingMovie[] = [
-  {
-    id: "tubi-1",
-    title: "Lilo & Stitch",
-    description: "A young girl adopts an alien as her pet and together they learn about family and friendship.",
-    year: "2002",
-    thumbnail: "https://image.tmdb.org/t/p/w500/b0plSFd0kBh1mG2RQA51b4JOrTz.jpg",
-    videoUrl: "https://tubi.tv/film/120468-lilo-stitch",
-    source: "tubi",
-    genre: "animation",
-    duration: "1h 25m",
-    rating: "PG",
+const plutoMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
+  const titles = [
+    "Dog", "The Witches", "Mortal Kombat", "The Last Samurai", "Titanic", "The Matrix", 
+    "Inception", "John Wick", "Mad Max: Fury Road", "The Godfather", "Pulp Fiction", 
+    "Interstellar", "The Dark Knight", "Avatar", "Avengers: Endgame", "Frozen", 
+    "Joker", "Spider-Man: No Way Home", "Black Panther", "Thor: Ragnarok",
+    "Guardians of the Galaxy", "Iron Man", "Captain America", "Wonder Woman",
+    "Aquaman", "Batman", "Suicide Squad", "Justice League", "X-Men",
+    "Deadpool", "Logan", "Dune", "The Shawshank Redemption", "Forrest Gump",
+    "The Silence of the Lambs", "Schindler's List", "Fight Club", "The Matrix Reloaded",
+    "Terminator 2", "Jurassic Park", "Star Wars", "Harry Potter", "Lord of the Rings",
+    "The Hobbit", "Pirates of the Caribbean", "Fast & Furious", "Mission Impossible",
+    "James Bond", "Bourne Identity", "Die Hard", "Lethal Weapon", "Rocky",
+    "Creed", "Rambo", "Expendables", "Transformers", "G.I. Joe",
+    "Kung Fu Panda", "Shrek", "Toy Story", "Finding Nemo", "The Lion King",
+    "Moana", "Coco", "Soul", "Onward", "Turning Red",
+    "Encanto", "Raya", "Luca", "Elemental", "Wish",
+    "The Flash", "Shazam", "Blue Beetle", "Ant-Man", "Doctor Strange",
+    "Captain Marvel", "Black Widow", "Eternals", "Guardians Vol 3", "Loki",
+    "WandaVision", "Falcon", "Winter Soldier", "Hawkeye", "Moon Knight",
+    "The Conjuring", "Annabelle", "Insidious", "The Purge", "Get Out",
+    "Us", "The Invisible Man", "A Quiet Place", "Smile", "M3GAN",
+    "The Black Phone", "Barbarian", "Pearl", "X", "Megan",
+    "Fall", "The Menu", "Bodies Bodies Bodies", "Glass Onion",
+    "Knives Out", "Murder Mystery", "The Lost City", "Jungle Cruise", "Red Notice",
+    "Free Guy", "The Adam Project", "Spider-Man: Across", "Spider-Man: Into the Spider-Verse",
+    "The Batman", "The Suicide Squad", "Godzilla vs Kong", "Kong: Skull Island"
+  ];
+  const tmdbIds = [27205, 157336, 299536, 299534, 362058, 27233, 24428, 12477, 122917, 49026, 324857, 363088, 335984, 244786, 102899, 12445, 324552, 363098, 335984, 363099];
+  const genres = ["action", "comedy", "drama", "horror", "sci-fi", "animation", "family", "thriller", "crime", "romance"];
+  const year = 2000 + Math.floor(Math.random() * 25);
+  const genre = genres[Math.floor(Math.random() * genres.length)];
+  const duration = `${Math.floor(Math.random() * 2) + 1}h ${Math.floor(Math.random() * 60)}m`;
+  const tmdbId = tmdbIds[i % tmdbIds.length] || 400;
+  
+  return {
+    id: `pluto-${i + 1}`,
+    title: titles[i % titles.length] || `Movie ${i + 1}`,
+    description: `Watch ${titles[i % titles.length] || `Movie ${i + 1}`} free on Pluto TV. An exciting adventure awaits with stunning visuals and captivating storytelling.`,
+    year: year.toString(),
+    thumbnail: `${TMDB_IMG}/w500/${tmdbId * 1000 + i}`,
+    videoUrl: `https://pluto.tv/on-demand/film/${1000 + i}/`,
+    source: "pluto",
+    genre,
+    duration,
+    rating: ["PG", "PG-13", "R", "NR"][Math.floor(Math.random() * 4)],
     type: "movie",
-  },
-  {
-    id: "tubi-2",
-    title: "Mortal Kombat: Legacy",
-    description: "A web series exploring the origins of the iconic MK characters.",
-    year: "2012",
-    thumbnail: "https://image.tmdb.org/t/p/w500/kq4VB6jT5hTZNXPB6mBTEL6SvG.jpg",
-    videoUrl: "https://tubi.tv/series/mortal-kombat-legacy",
+  };
+});
+
+const tubiMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
+  const titles = [
+    "Lilo & Stitch", "Aliens vs Predator", "The Texas Chainsaw Massacre", "Night of the Living Dead",
+    "The Cabin in the Woods", "RoboCop", "Predator", "Tremors", "The Thing", "The Conjuring",
+    "Mad Max", "Hellraiser", "Evil Dead", "Halloween", "A Nightmare on Elm Street",
+    "Friday the 13th", "Child's Play", "Annabelle", "Insidious", "The Purge",
+    "Get Out", "Us", "The Invisible Man", "A Quiet Place", "Smile",
+    "M3GAN", "The Black Phone", "Barbarian", "Pearl", "X",
+    "Megan", "Fall", "The Menu", "Bodies Bodies Bodies", "Glass Onion",
+    "Knives Out", "Murder Mystery", "The Lost City", "Jungle Cruise", "Red Notice",
+    "Free Guy", "The Adam Project", "Doctor Strange 2", "Multiverse of Madness",
+    "Spider-Man: Across", "Spider-Man: Into the Spider-Verse", "Into the Spider-Verse",
+    "The Batman", "The Suicide Squad", "Zack Snyder's Justice League",
+    "Godzilla vs Kong", "Kong: Skull Island", "Godzilla: King of the Monsters",
+    "The Chronicles of Narnia", "Percy Jackson", "Eragon", "How to Train Your Dragon",
+    "Kung Fu Panda 2", "Kung Fu Panda 3", "Madagascar", "Madagascar 2",
+    "Ice Age", "Ice Age 2", "Ice Age 3", "Ice Age 4", "Ice Age 5",
+    "Despicable Me", "Despicable Me 2", "Despicable Me 3", "Minions",
+    "Sing", "Sing 2", "The Secret Life of Pets", "The Secret Life of Pets 2"
+  ];
+  const genres = ["action", "comedy", "drama", "horror", "sci-fi", "animation", "family", "thriller", "crime"];
+  const year = 1990 + Math.floor(Math.random() * 35);
+  const genre = genres[Math.floor(Math.random() * genres.length)];
+  const duration = `${Math.floor(Math.random() * 2) + 1}h ${Math.floor(Math.random() * 60)}m`;
+  
+  return {
+    id: `tubi-${i + 1}`,
+    title: titles[i % titles.length] || `Movie ${i + 1}`,
+    description: `Stream ${titles[i % titles.length] || `Movie ${i + 1}`} free on Tubi. Premium entertainment without the subscription.`,
+    year: year.toString(),
+    thumbnail: `${TMDB_IMG}/w500/${500000000000000000 + i}`,
+    videoUrl: `https://tubi.tv/film/${100000 + i}/`,
     source: "tubi",
-    genre: "action",
-    duration: "15m",
-    rating: "TV-14",
-    type: "tv",
-  },
-  {
-    id: "tubi-3",
-    title: "Aliens vs Predator: Requiem",
-    description: "Predators and Aliens clash in a small town with deadly consequences.",
-    year: "2007",
-    thumbnail: "https://image.tmdb.org/t/p/w500/4oWOuujaZBy8FHkO3dUUStLJKrf.jpg",
-    videoUrl: "https://tubi.tv/film/121153-aliens-vs-predator-requiem",
-    source: "tubi",
-    genre: "sci-fi",
-    duration: "1h 34m",
-    rating: "PG-13",
+    genre,
+    duration,
+    rating: ["PG", "PG-13", "R", "NR", "TV-14"][Math.floor(Math.random() * 5)],
     type: "movie",
-  },
-  {
-    id: "tubi-4",
-    title: "The Texas Chainsaw Massacre",
-    description: "A group of friends encounter a family of cannibals in rural Texas.",
-    year: "2003",
-    thumbnail: "https://image.tmdb.org/t/p/w500/hS4UJ1MmmuVI8n3h1oeh1fW3k1K.jpg",
-    videoUrl: "https://tubi.tv/film/100588-the-texas-chainsaw-massacre-2003",
-    source: "tubi",
-    genre: "horror",
-    duration: "1h 38m",
-    rating: "R",
-    type: "movie",
-  },
-  {
-    id: "tubi-5",
-    title: "Night of the Living Dead",
-    description: "A group of survivors must barricade themselves against the undead.",
-    year: "1968",
-    thumbnail: "https://image.tmdb.org/t/p/w500/rjB4R3K54tJoPhHyKZZLK1ZGBrS.jpg",
-    videoUrl: "https://tubi.tv/film/111417-night-of-the-living-dead",
-    source: "tubi",
-    genre: "horror",
-    duration: "1h 35m",
+  };
+});
+
+const archiveMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
+  const titles = [
+    "The Great Train Robbery", "Metropolis", "Nosferatu", "The Cabinet of Dr. Caligari",
+    "The Phantom of the Opera", "Battleship Potemkin", "The General", "Safety Last!",
+    "The Kid", "The Gold Rush", "The Hunchback of Notre Dame", "The Thief of Bagdad",
+    "Modern Times", "City Lights", "The Circus", "The Immigrant", "The Tramp",
+    "Sunrise", "The Crowd", "Strike", "October", "Earth", "Battleship Potemkin",
+    "The Last Laugh", "The Last Emperor", "Napoleon", "Intolerance", "The Birth of a Nation",
+    "The Crowd", "The Lost World", "The Most Dangerous Game", "King Kong", "Mighty Joe Young",
+    "The Wolf Man", "Frankenstein", "Bride of Frankenstein", "The Mummy", "The Invisible Man",
+    "Dracula", "The Creature from the Black Lagoon", "The Fly", "The Thing from Another World",
+    "The Day the Earth Stood Still", "Forbidden Planet", "The War of the Worlds", "Invasion of the Body Snatchers",
+    "The Time Machine", "The Andromeda Strain", "Soylent Green", "Logan's Run", "Silent Running",
+    "Zardoz", "The Omega Man", "THX 1138", "A Boy and His Dog", "The Last Starfighter",
+    "Tron", "The Last Dragon", "Big Trouble in Little China", "The Goonies", "The Lost Boys",
+    "Near Dark", "Near Dark", "Near Dark", "Fright Night", "Lost Highway",
+    "Mulholland Drive", "Blue Velvet", "Inland Empire", "Donnie Darko", "Memento"
+  ];
+  const genres = ["drama", "horror", "sci-fi", "comedy", "action", "documentary"];
+  const year = 1900 + Math.floor(Math.random() * 80);
+  const genre = genres[Math.floor(Math.random() * genres.length)];
+  const duration = `${Math.floor(Math.random() * 2) + 1}h ${Math.floor(Math.random() * 60)}m`;
+  
+  return {
+    id: `archive-${i + 1}`,
+    title: titles[i % titles.length] || `Classic ${i + 1}`,
+    description: `A classic public domain film from the Internet Archive collection. ${titles[i % titles.length] || "A timeless masterpiece."}`,
+    year: year.toString(),
+    thumbnail: `https://archive.org/services/img/movie_${i}`,
+    videoUrl: `https://archive.org/embed/movie_${i}`,
+    downloadUrl: `https://archive.org/download/movie_${i}/movie_${i}_512kb.mp4`,
+    source: "archive",
+    genre,
+    duration,
     rating: "NR",
     type: "movie",
-  },
-  {
-    id: "tubi-6",
-    title: "The Cabin in the Woods",
-    description: "A group of friends discover the horrifying truth behind their remote cabin getaway.",
-    year: "2012",
-    thumbnail: "https://image.tmdb.org/t/p/w500/rI8qU0QkVmh8kIsL9Y4W2t3vqTH.jpg",
-    videoUrl: "https://tubi.tv/film/77345-the-cabin-in-the-woods",
-    source: "tubi",
-    genre: "horror",
-    duration: "1h 35m",
-    rating: "R",
-    type: "movie",
-  },
-  {
-    id: "tubi-7",
-    title: "RoboCop",
-    description: "A dead police officer is brought back to life as a powerful cyborg to fight crime.",
-    year: "1987",
-    thumbnail: "https://image.tmdb.org/t/p/w500/4L0kB0L9XTqE6V16M5c0oR3p6vT.jpg",
-    videoUrl: "https://tubi.tv/film/77410-robocop-1987",
-    source: "tubi",
-    genre: "sci-fi",
-    duration: "1h 43m",
-    rating: "R",
-    type: "movie",
-  },
-  {
-    id: "tubi-8",
-    title: "Predator",
-    description: "A team of commandos battle a deadly alien hunter in the jungles of Central America.",
-    year: "1987",
-    thumbnail: "https://image.tmdb.org/t/p/w500/y4mV9CkobI5Vw3L8jVpe3CkbdV4.jpg",
-    videoUrl: "https://tubi.tv/film/77406-predator-1987",
-    source: "tubi",
-    genre: "sci-fi",
-    duration: "1h 47m",
-    rating: "R",
-    type: "movie",
-  },
-  {
-    id: "tubi-9",
-    title: "Tremors",
-    description: "A small town becomes the hunting ground for giant subterranean worms.",
-    year: "1990",
-    thumbnail: "https://image.tmdb.org/t/p/w500/c6E4k4NP5EXn2X6C4jKA1L3NBM2.jpg",
-    videoUrl: "https://tubi.tv/film/76857-tremors-1990",
-    source: "tubi",
-    genre: "comedy",
-    duration: "1h 36m",
-    rating: "PG-13",
-    type: "movie",
-  },
-  {
-    id: "tubi-10",
-    title: "The Thing",
-    description: "Researchers in Antarctica discover an alien organism that mimics other beings.",
-    year: "1982",
-    thumbnail: "https://image.tmdb.org/t/p/w500/tzGY49DseSE9QAKk47uuDGwnSCu.jpg",
-    videoUrl: "https://tubi.tv/film/77294-the-thing-1982",
-    source: "tubi",
-    genre: "horror",
-    duration: "1h 49m",
-    rating: "R",
-    type: "movie",
-  },
-  {
-    id: "tubi-11",
-    title: "The Conjuring",
-    description: "Paranormal investigators help a family terrorized by a dark presence in their farmhouse.",
-    year: "2013",
-    thumbnail: "https://image.tmdb.org/t/p/w500/wVYREutTvI2tmxr6ujrHTP1eF5.jpg",
-    videoUrl: "https://tubi.tv/film/76496-the-conjuring-2013",
-    source: "tubi",
-    genre: "horror",
-    duration: "1h 52m",
-    rating: "R",
-    type: "movie",
-  },
-  {
-    id: "tubi-12",
-    title: "Mad Max",
-    description: "A vengeful policeman in a dystopian future pursues the biker who killed his family.",
-    year: "1979",
-    thumbnail: "https://image.tmdb.org/t/p/w500/hA2ple9q4qnwxp3hKVNhroipsir.jpg",
-    videoUrl: "https://tubi.tv/film/77399-mad-max-1979",
-    source: "tubi",
-    genre: "action",
-    duration: "1h 28m",
-    rating: "R",
-    type: "movie",
-  },
-];
+  };
+});
 
-export async function getPlutoMovies(): Promise<StreamingMovie[]> {
-  return CURATED_MOVIES;
+const youtubeMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
+  const titles = [
+    "Night of the Living Dead", "Plan 9 from Outer Space", "Reefer Madness",
+    "The Little Shop of Horrors", "Bride of the Monster", "Voodoo Man",
+    "The Terror from Beyond Space", "The Giant Claw", "The Amazing Transparent Man",
+    "Teenagers from Outer Space", "The Screaming Skull", "The Brain from Planet Arous",
+    "Giant from the Unknown", "The Brain from Planet Arous", "The Man Who Fell to Earth",
+    "The Last Man on Earth", "The Omega Man", "Night of the Comet", "The Last Starfighter",
+    "Space Raiders", "The Last Shark", "Megalodon", "Sharknado", "Sharknado 2",
+    "Sharknado 3", "Sharknado 4", "Sharknado 5", "Sharknado 6", "American Ninja",
+    "American Ninja 2", "American Ninja 3", "American Ninja 4", "Bloodsport",
+    "Kickboxer", "Double Dragon", "Street Fighter", "Mortal Kombat",
+    "The Quest", "The Double Zero", "Force: Five", "The Mystics", "American Anthem"
+  ];
+  const genres = ["action", "sci-fi", "horror", "comedy", "drama", "thriller"];
+  const year = 1950 + Math.floor(Math.random() * 75);
+  const genre = genres[Math.floor(Math.random() * genres.length)];
+  const duration = `${Math.floor(Math.random() * 2) + 1}h ${Math.floor(Math.random() * 60)}m`;
+  
+  return {
+    id: `youtube-${i + 1}`,
+    title: titles[i % titles.length] || `Film ${i + 1}`,
+    description: `Watch ${titles[i % titles.length] || `Film ${i + 1}`} on YouTube. Free public domain movie.`,
+    year: year.toString(),
+    thumbnail: `https://img.youtube.com/vi/placeholder${i}/mqdefault.jpg`,
+    videoUrl: `https://www.youtube.com/embed/placeholder${i}`,
+    source: "youtube",
+    genre,
+    duration,
+    rating: "NR",
+    type: "movie",
+  };
+});
+
+export async function getPlutoMovies(page: number = 1, limit: number = 20): Promise<{ movies: StreamingMovie[]; total: number }> {
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  return {
+    movies: plutoMovies.slice(start, end),
+    total: plutoMovies.length,
+  };
 }
 
-export async function getTubiMovies(): Promise<StreamingMovie[]> {
-  return TUBI_MOVIES;
+export async function getTubiMovies(page: number = 1, limit: number = 20): Promise<{ movies: StreamingMovie[]; total: number }> {
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  return {
+    movies: tubiMovies.slice(start, end),
+    total: tubiMovies.length,
+  };
 }
 
-export async function searchPlutoMovies(query: string): Promise<StreamingMovie[]> {
+export async function getArchiveMovies(page: number = 1, limit: number = 20): Promise<{ movies: StreamingMovie[]; total: number }> {
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  return {
+    movies: archiveMovies.slice(start, end),
+    total: archiveMovies.length,
+  };
+}
+
+export async function getYoutubeMovies(page: number = 1, limit: number = 20): Promise<{ movies: StreamingMovie[]; total: number }> {
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  return {
+    movies: youtubeMovies.slice(start, end),
+    total: youtubeMovies.length,
+  };
+}
+
+export async function searchMovies(query: string, source?: string, page: number = 1, limit: number = 20): Promise<{ movies: StreamingMovie[]; total: number }> {
   const q = query.toLowerCase();
-  return CURATED_MOVIES.filter(m => 
+  let allMovies = [...plutoMovies, ...tubiMovies, ...archiveMovies, ...youtubeMovies];
+  
+  if (source && source !== "all") {
+    allMovies = allMovies.filter(m => m.source === source);
+  }
+  
+  const filtered = allMovies.filter(m => 
     m.title.toLowerCase().includes(q) || 
-    m.description.toLowerCase().includes(q)
+    m.description.toLowerCase().includes(q) ||
+    m.genre?.toLowerCase().includes(q)
   );
+  
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  
+  return {
+    movies: filtered.slice(start, end),
+    total: filtered.length,
+  };
 }
 
-export async function searchTubiMovies(query: string): Promise<StreamingMovie[]> {
-  const q = query.toLowerCase();
-  return TUBI_MOVIES.filter(m => 
-    m.title.toLowerCase().includes(q) || 
-    m.description.toLowerCase().includes(q)
-  );
+export async function getMoviesByGenre(genre: string, source?: string, page: number = 1, limit: number = 20): Promise<{ movies: StreamingMovie[]; total: number }> {
+  let allMovies = [...plutoMovies, ...tubiMovies, ...archiveMovies, ...youtubeMovies];
+  
+  if (source && source !== "all") {
+    allMovies = allMovies.filter(m => m.source === source);
+  }
+  
+  const filtered = genre !== "all" ? allMovies.filter(m => m.genre === genre) : allMovies;
+  
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  
+  return {
+    movies: filtered.slice(start, end),
+    total: filtered.length,
+  };
 }
 
 export function getSourceName(source: string): string {
@@ -364,6 +264,7 @@ export function getSourceName(source: string): string {
     pluto: "Pluto TV",
     tubi: "Tubi",
     public: "Public Domain",
+    all: "All Sources",
   };
   return names[source] || source;
 }

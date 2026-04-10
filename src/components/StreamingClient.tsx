@@ -24,7 +24,10 @@ interface StreamingClientProps {
   initialTab?: string;
   initialQuery?: string;
   initialGenre?: string;
+  initialPage?: number;
   movies: StreamingMovie[];
+  totalMovies?: number;
+  totalPages?: number;
   allMoviesCount: {
     all: number;
     archive: number;
@@ -44,12 +47,22 @@ const sourceInfo: Record<string, { name: string; color: string; icon: string }> 
 
 const genres = ["all", "action", "comedy", "drama", "horror", "sci-fi", "animation", "family", "crime", "thriller"];
 
-export function StreamingClient({ initialTab = "all", initialQuery = "", initialGenre = "all", movies, allMoviesCount }: StreamingClientProps) {
+export function StreamingClient({ 
+  initialTab = "all", 
+  initialQuery = "", 
+  initialGenre = "all", 
+  initialPage = 1,
+  movies, 
+  totalMovies = 0,
+  totalPages = 1,
+  allMoviesCount 
+}: StreamingClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState(initialTab);
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [filterGenre, setFilterGenre] = useState(initialGenre);
+  const [currentPage, setCurrentPage] = useState(initialPage);
   const [selectedMovie, setSelectedMovie] = useState<StreamingMovie | null>(null);
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -60,17 +73,25 @@ export function StreamingClient({ initialTab = "all", initialQuery = "", initial
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push(`/streaming?tab=${activeTab}&query=${encodeURIComponent(searchQuery)}&genre=${filterGenre}`);
+    setCurrentPage(1);
+    router.push(`/streaming?tab=${activeTab}&query=${encodeURIComponent(searchQuery)}&genre=${filterGenre}&page=1`);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    router.push(`/streaming?tab=${activeTab}&query=${encodeURIComponent(searchQuery)}&genre=${filterGenre}&page=${page}`);
   };
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
-    router.push(`/streaming?tab=${tab}&query=${searchQuery}&genre=${filterGenre}`);
+    setCurrentPage(1);
+    router.push(`/streaming?tab=${tab}&query=${searchQuery}&genre=${filterGenre}&page=1`);
   };
 
   const handleGenreChange = (g: string) => {
     setFilterGenre(g);
-    router.push(`/streaming?tab=${activeTab}&query=${searchQuery}&genre=${g}`);
+    setCurrentPage(1);
+    router.push(`/streaming?tab=${activeTab}&query=${searchQuery}&genre=${g}&page=1`);
   };
 
   const tabs = [
@@ -172,6 +193,12 @@ export function StreamingClient({ initialTab = "all", initialQuery = "", initial
             ))}
           </div>
         </div>
+
+        {totalMovies > 0 && (
+          <div className="mb-4 text-[#9ca3af] text-sm">
+            Showing {movies.length} of {totalMovies} movies
+          </div>
+        )}
 
         {movies.length > 0 ? (
           viewMode === "grid" ? (
@@ -318,6 +345,48 @@ export function StreamingClient({ initialTab = "all", initialQuery = "", initial
             </div>
             <h3 className="text-xl font-semibold text-white mb-2">No movies found</h3>
             <p className="text-[#9ca3af]">Try adjusting your search or filters</p>
+          </div>
+        )}
+
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2 py-8">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-[#1f1f1f] hover:bg-[#2a2a2a] disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-white font-medium transition-colors"
+            >
+              Previous
+            </button>
+            <div className="flex items-center gap-1">
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                let pageNum = i + 1;
+                if (totalPages > 5) {
+                  if (currentPage <= 3) pageNum = i + 1;
+                  else if (currentPage >= totalPages - 2) pageNum = totalPages - 4 + i;
+                  else pageNum = currentPage - 2 + i;
+                }
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                    className={`w-10 h-10 rounded-lg font-medium transition-colors ${
+                      currentPage === pageNum
+                        ? "bg-[#ff6b6b] text-white"
+                        : "bg-[#1f1f1f] text-[#9ca3af] hover:bg-[#2a2a2a]"
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+            </div>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-[#1f1f1f] hover:bg-[#2a2a2a] disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-white font-medium transition-colors"
+            >
+              Next
+            </button>
           </div>
         )}
       </div>
