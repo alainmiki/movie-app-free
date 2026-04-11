@@ -217,18 +217,24 @@ export async function getYoutubeMovies(page: number = 1, limit: number = 20): Pr
 }
 
 export async function searchMovies(query: string, source?: string, page: number = 1, limit: number = 20): Promise<{ movies: StreamingMovie[]; total: number }> {
-  const q = query.toLowerCase();
+  const q = query.toLowerCase().trim();
+  if (!q) {
+    return { movies: [], total: 0 };
+  }
+  
   let allMovies = [...plutoMovies, ...tubiMovies, ...archiveMovies, ...youtubeMovies];
   
   if (source && source !== "all") {
     allMovies = allMovies.filter(m => m.source === source);
   }
   
-  const filtered = allMovies.filter(m => 
-    m.title.toLowerCase().includes(q) || 
-    m.description.toLowerCase().includes(q) ||
-    m.genre?.toLowerCase().includes(q)
-  );
+  const filtered = allMovies.filter(m => {
+    const titleMatch = m.title.toLowerCase().includes(q);
+    const descMatch = m.description.toLowerCase().includes(q);
+    const genreMatch = m.genre?.toLowerCase().includes(q);
+    const yearMatch = m.year.includes(q);
+    return titleMatch || descMatch || genreMatch || yearMatch;
+  });
   
   const start = (page - 1) * limit;
   const end = start + limit;

@@ -284,16 +284,29 @@ export function StreamingClient({
                       {movie.description}
                     </p>
                     <div className="flex items-center justify-between mt-2">
-                      {movie.genre && (
-                        <span className="px-2 py-0.5 bg-[#2a2a2a] rounded text-xs text-[#9ca3af]">
-                          {movie.genre}
-                        </span>
-                      )}
-                      {movie.rating && (
-                        <span className="flex items-center gap-1 text-xs text-[#ffd93d]">
-                          <Star className="w-3 h-3 fill-[#ffd93d]" />
-                          {movie.rating}
-                        </span>
+                      <div className="flex items-center gap-2">
+                        {movie.genre && (
+                          <span className="px-2 py-0.5 bg-[#2a2a2a] rounded text-xs text-[#9ca3af]">
+                            {movie.genre}
+                          </span>
+                        )}
+                        {movie.rating && (
+                          <span className="flex items-center gap-1 text-xs text-[#ffd93d]">
+                            <Star className="w-3 h-3 fill-[#ffd93d]" />
+                            {movie.rating}
+                          </span>
+                        )}
+                      </div>
+                      {movie.videoUrl && (
+                        <a
+                          href={movie.videoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex items-center gap-1 px-2 py-1 bg-green-600 hover:bg-green-500 text-white rounded text-xs font-medium transition-colors"
+                        >
+                          <Download className="w-3 h-3" />
+                        </a>
                       )}
                     </div>
                   </div>
@@ -347,6 +360,18 @@ export function StreamingClient({
                       {movie.genre && <span className="px-2 py-0.5 bg-[#2a2a2a] rounded text-xs">{movie.genre}</span>}
                       {movie.rating && <span className="flex items-center gap-1"><Star className="w-4 h-4 fill-[#ffd93d] text-[#ffd93d]" />{movie.rating}</span>}
                     </div>
+                    {movie.videoUrl && (
+                      <a
+                        href={movie.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-green-600 hover:bg-green-500 text-white rounded-lg text-sm font-medium transition-colors"
+                      >
+                        <Download className="w-4 h-4" />
+                        Download
+                      </a>
+                    )}
                   </div>
                 </div>
               ))}
@@ -456,15 +481,26 @@ export function StreamingClient({
               
               <div className="flex flex-wrap gap-3">
                 {selectedMovie.videoUrl && (
-                  <a
-                    href={selectedMovie.videoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-6 py-3 bg-[#ff6b6b] hover:bg-[#ff5252] text-white rounded-xl font-medium transition-colors"
-                  >
-                    <Play className="w-5 h-5 fill-white" />
-                    Watch Now
-                  </a>
+                  <>
+                    <a
+                      href={selectedMovie.videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-6 py-3 bg-[#ff6b6b] hover:bg-[#ff5252] text-white rounded-xl font-medium transition-colors"
+                    >
+                      <Play className="w-5 h-5 fill-white" />
+                      Watch Now
+                    </a>
+                    <a
+                      href={selectedMovie.videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-white rounded-xl font-medium transition-colors"
+                    >
+                      <Download className="w-5 h-5" />
+                      Download Offline
+                    </a>
+                  </>
                 )}
                 {selectedMovie.downloadUrl && (
                   <a
