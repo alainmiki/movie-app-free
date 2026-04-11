@@ -75,13 +75,15 @@ export default async function StreamingPage({ searchParams }: StreamingPageProps
       movies={movies}
       totalMovies={total}
       totalPages={Math.ceil(total / limit)}
-      allMoviesCount={{
-        all: totalAll,
-        archive: totalArchive,
-        youtube: totalYoutube,
-        pluto: totalPluto,
-        tubi: totalTubi,
-      }}
+allMoviesCount={{
+              all: totalAll,
+              archive: totalArchive,
+              youtube: totalYoutube,
+              pluto: totalPluto,
+              tubi: totalTubi,
+              crackle: totalArchive,
+              popcornflix: totalTubi,
+            }}
     />
   );
 }

@@ -7,7 +7,7 @@ export interface StreamingMovie {
   year: string;
   thumbnail?: string;
   videoUrl?: string;
-  source: "archive" | "youtube" | "pluto" | "tubi" | "public";
+  source: "archive" | "youtube" | "pluto" | "tubi" | "crackle" | "popcornflix" | "public";
   duration?: string;
   genre?: string;
   downloadUrl?: string;
@@ -40,24 +40,27 @@ const plutoMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
     "The Conjuring", "Annabelle", "Insidious", "The Purge", "Get Out",
     "Us", "The Invisible Man", "A Quiet Place", "Smile", "M3GAN",
     "The Black Phone", "Barbarian", "Pearl", "X", "Megan",
-    "Fall", "The Menu", "Bodies Bodies Bodies", "Glass Onion",
-    "Knives Out", "Murder Mystery", "The Lost City", "Jungle Cruise", "Red Notice",
-    "Free Guy", "The Adam Project", "Spider-Man: Across", "Spider-Man: Into the Spider-Verse",
-    "The Batman", "The Suicide Squad", "Godzilla vs Kong", "Kong: Skull Island"
+    "Fall", "The Menu", "Bodies Bodies Bodies", "Glass Onion", "Knives Out",
+    "Murder Mystery", "The Lost City", "Jungle Cruise", "Red Notice", "Free Guy",
+    "The Adam Project", "Spider-Man: Across", "Spider-Man: Into the Spider-Verse", "The Batman", "The Suicide Squad",
+    "Godzilla vs Kong", "Kong: Skull Island", "Godzilla: King of the Monsters", "The Chronicles of Narnia",
+    "Percy Jackson", "Eragon", "How to Train Your Dragon", "Kung Fu Panda 2", "Kung Fu Panda 3",
+    "Madagascar", "Madagascar 2", "Ice Age", "Ice Age 2", "Ice Age 3",
+    "Ice Age 4", "Ice Age 5", "Despicable Me", "Despicable Me 2", "Despicable Me 3",
+    "Minions", "Sing", "Sing 2", "The Secret Life of Pets", "The Secret Life of Pets 2"
   ];
-  const tmdbIds = [27205, 157336, 299536, 299534, 362058, 27233, 24428, 12477, 122917, 49026, 324857, 363088, 335984, 244786, 102899, 12445, 324552, 363098, 335984, 363099];
-  const genres = ["action", "comedy", "drama", "horror", "sci-fi", "animation", "family", "thriller", "crime", "romance"];
+  const genres = ["action", "comedy", "drama", "horror", "sci-fi", "animation", "family", "thriller", "crime"];
   const year = 2000 + Math.floor(Math.random() * 25);
   const genre = genres[Math.floor(Math.random() * genres.length)];
   const duration = `${Math.floor(Math.random() * 2) + 1}h ${Math.floor(Math.random() * 60)}m`;
-  const tmdbId = tmdbIds[i % tmdbIds.length] || 400;
+  const tmdbId = 630000000000000000 + i;
   
   return {
     id: `pluto-${i + 1}`,
     title: titles[i % titles.length] || `Movie ${i + 1}`,
     description: `Watch ${titles[i % titles.length] || `Movie ${i + 1}`} free on Pluto TV. An exciting adventure awaits with stunning visuals and captivating storytelling.`,
     year: year.toString(),
-    thumbnail: `${TMDB_IMG}/w500/${tmdbId * 1000 + i}`,
+    thumbnail: `${TMDB_IMG}/w500/${tmdbId}`,
     videoUrl: `https://pluto.tv/on-demand/film/${1000 + i}/`,
     source: "pluto",
     genre,
@@ -77,15 +80,28 @@ const tubiMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
     "M3GAN", "The Black Phone", "Barbarian", "Pearl", "X",
     "Megan", "Fall", "The Menu", "Bodies Bodies Bodies", "Glass Onion",
     "Knives Out", "Murder Mystery", "The Lost City", "Jungle Cruise", "Red Notice",
-    "Free Guy", "The Adam Project", "Doctor Strange 2", "Multiverse of Madness",
-    "Spider-Man: Across", "Spider-Man: Into the Spider-Verse", "Into the Spider-Verse",
-    "The Batman", "The Suicide Squad", "Zack Snyder's Justice League",
-    "Godzilla vs Kong", "Kong: Skull Island", "Godzilla: King of the Monsters",
-    "The Chronicles of Narnia", "Percy Jackson", "Eragon", "How to Train Your Dragon",
-    "Kung Fu Panda 2", "Kung Fu Panda 3", "Madagascar", "Madagascar 2",
-    "Ice Age", "Ice Age 2", "Ice Age 3", "Ice Age 4", "Ice Age 5",
-    "Despicable Me", "Despicable Me 2", "Despicable Me 3", "Minions",
-    "Sing", "Sing 2", "The Secret Life of Pets", "The Secret Life of Pets 2"
+    "Free Guy", "The Adam Project", "Spider-Man: Across", "Spider-Man: Into the Spider-Verse",
+    "The Batman", "The Suicide Squad", "Godzilla vs Kong", "Kong: Skull Island", "Godzilla: King of the Monsters",
+    "The Chronicles of Narnia", "Percy Jackson", "Eragon", "How to Train Your Dragon", "Kung Fu Panda 2",
+    "Kung Fu Panda 3", "Madagascar", "Madagascar 2", "Ice Age", "Ice Age 2",
+    "Ice Age 3", "Ice Age 4", "Ice Age 5", "Despicable Me", "Despicable Me 2",
+    "Despicable Me 3", "Minions", "Sing", "Sing 2", "The Secret Life of Pets",
+    "The Secret Life of Pets 2", "The Matrix", "Inception", "The Dark Knight", "Avatar",
+    "Avengers: Endgame", "Frozen", "Joker", "Spider-Man: No Way Home", "Black Panther",
+    "Thor: Ragnarok", "Guardians of the Galaxy", "Iron Man", "Captain America", "Wonder Woman",
+    "Aquaman", "Batman", "Suicide Squad", "Justice League", "X-Men",
+    "Deadpool", "Logan", "Dune", "The Shawshank Redemption", "Forrest Gump",
+    "The Silence of the Lambs", "Schindler's List", "Fight Club", "The Matrix Reloaded",
+    "Terminator 2", "Jurassic Park", "Star Wars", "Harry Potter", "Lord of the Rings",
+    "The Hobbit", "Pirates of the Caribbean", "Fast & Furious", "Mission Impossible",
+    "James Bond", "Bourne Identity", "Die Hard", "Lethal Weapon", "Rocky",
+    "Creed", "Rambo", "Expendables", "Transformers", "G.I. Joe",
+    "Kung Fu Panda", "Shrek", "Toy Story", "Finding Nemo", "The Lion King",
+    "Moana", "Coco", "Soul", "Onward", "Turning Red",
+    "Encanto", "Raya", "Luca", "Elemental", "Wish",
+    "The Flash", "Shazam", "Blue Beetle", "Ant-Man", "Doctor Strange",
+    "Captain Marvel", "Black Widow", "Eternals", "Guardians Vol 3", "Loki",
+    "WandaVision", "Falcon", "Winter Soldier", "Hawkeye", "Moon Knight"
   ];
   const genres = ["action", "comedy", "drama", "horror", "sci-fi", "animation", "family", "thriller", "crime"];
   const year = 1990 + Math.floor(Math.random() * 35);
@@ -122,8 +138,21 @@ const archiveMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
     "The Time Machine", "The Andromeda Strain", "Soylent Green", "Logan's Run", "Silent Running",
     "Zardoz", "The Omega Man", "THX 1138", "A Boy and His Dog", "The Last Starfighter",
     "Tron", "The Last Dragon", "Big Trouble in Little China", "The Goonies", "The Lost Boys",
-    "Near Dark", "Near Dark", "Near Dark", "Fright Night", "Lost Highway",
-    "Mulholland Drive", "Blue Velvet", "Inland Empire", "Donnie Darko", "Memento"
+    "Near Dark", "Fright Night", "Lost Highway", "Mulholland Drive", "Blue Velvet",
+    "Inland Empire", "Donnie Darko", "Memento", "The Cabinet of Dr. Caligari", "The General",
+    "The Kid", "The Gold Rush", "The Phantom of the Opera", "The Hunchback of Notre Dame", "The Thief of Bagdad",
+    "Modern Times", "City Lights", "The Circus", "The Immigrant", "The Tramp",
+    "Sunrise", "The Crowd", "Strike", "October", "Earth", "Battleship Potemkin",
+    "The Last Laugh", "The Last Emperor", "Napoleon", "Intolerance", "The Birth of a Nation",
+    "The Crowd", "The Lost World", "The Most Dangerous Game", "King Kong", "Mighty Joe Young",
+    "The Wolf Man", "Frankenstein", "Bride of Frankenstein", "The Mummy", "The Invisible Man",
+    "Dracula", "The Creature from the Black Lagoon", "The Fly", "The Thing from Another World",
+    "The Day the Earth Stood Still", "Forbidden Planet", "The War of the Worlds", "Invasion of the Body Snatchers",
+    "The Time Machine", "The Andromeda Strain", "Soylent Green", "Logan's Run", "Silent Running",
+    "Zardoz", "The Omega Man", "THX 1138", "A Boy and His Dog", "The Last Starfighter",
+    "Tron", "The Last Dragon", "Big Trouble in Little China", "The Goonies", "The Lost Boys",
+    "Near Dark", "Fright Night", "Lost Highway", "Mulholland Drive", "Blue Velvet",
+    "Inland Empire", "Donnie Darko", "Memento"
   ];
   const genres = ["drama", "horror", "sci-fi", "comedy", "action", "documentary"];
   const year = 1900 + Math.floor(Math.random() * 80);
@@ -152,13 +181,28 @@ const youtubeMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
     "The Little Shop of Horrors", "Bride of the Monster", "Voodoo Man",
     "The Terror from Beyond Space", "The Giant Claw", "The Amazing Transparent Man",
     "Teenagers from Outer Space", "The Screaming Skull", "The Brain from Planet Arous",
-    "Giant from the Unknown", "The Brain from Planet Arous", "The Man Who Fell to Earth",
-    "The Last Man on Earth", "The Omega Man", "Night of the Comet", "The Last Starfighter",
-    "Space Raiders", "The Last Shark", "Megalodon", "Sharknado", "Sharknado 2",
-    "Sharknado 3", "Sharknado 4", "Sharknado 5", "Sharknado 6", "American Ninja",
-    "American Ninja 2", "American Ninja 3", "American Ninja 4", "Bloodsport",
-    "Kickboxer", "Double Dragon", "Street Fighter", "Mortal Kombat",
-    "The Quest", "The Double Zero", "Force: Five", "The Mystics", "American Anthem"
+    "Giant from the Unknown", "The Man Who Fell to Earth", "The Last Man on Earth",
+    "Night of the Comet", "The Last Starfighter", "Space Raiders", "The Last Shark",
+    "Megalodon", "Sharknado", "Sharknado 2", "Sharknado 3", "Sharknado 4",
+    "Sharknado 5", "Sharknado 6", "American Ninja", "American Ninja 2", "American Ninja 3",
+    "American Ninja 4", "Bloodsport", "Kickboxer", "Double Dragon", "Street Fighter",
+    "Mortal Kombat", "The Quest", "The Double Zero", "The Mystics", "American Anthem",
+    "The Last Dragon", "Big Trouble in Little China", "The Goonies", "The Lost Boys",
+    "Near Dark", "Fright Night", "Lost Highway", "Mulholland Drive", "Blue Velvet",
+    "Inland Empire", "Donnie Darko", "Memento", "The Cabinet of Dr. Caligari", "The General",
+    "The Kid", "The Gold Rush", "The Phantom of the Opera", "The Hunchback of Notre Dame", "The Thief of Bagdad",
+    "Modern Times", "City Lights", "The Circus", "The Immigrant", "The Tramp",
+    "Sunrise", "The Crowd", "Strike", "October", "Earth", "Battleship Potemkin",
+    "The Last Laugh", "The Last Emperor", "Napoleon", "Intolerance", "The Birth of a Nation",
+    "The Crowd", "The Lost World", "The Most Dangerous Game", "King Kong", "Mighty Joe Young",
+    "The Wolf Man", "Frankenstein", "Bride of Frankenstein", "The Mummy", "The Invisible Man",
+    "Dracula", "The Creature from the Black Lagoon", "The Fly", "The Thing from Another World",
+    "The Day the Earth Stood Still", "Forbidden Planet", "The War of the Worlds", "Invasion of the Body Snatchers",
+    "The Time Machine", "The Andromeda Strain", "Soylent Green", "Logan's Run", "Silent Running",
+    "Zardoz", "The Omega Man", "THX 1138", "A Boy and His Dog", "The Last Starfighter",
+    "Tron", "The Last Dragon", "Big Trouble in Little China", "The Goonies", "The Lost Boys",
+    "Near Dark", "Fright Night", "Lost Highway", "Mulholland Drive", "Blue Velvet",
+    "Inland Empire", "Donnie Darko", "Memento"
   ];
   const genres = ["action", "sci-fi", "horror", "comedy", "drama", "thriller"];
   const year = 1950 + Math.floor(Math.random() * 75);
@@ -180,12 +224,115 @@ const youtubeMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
   };
 });
 
+const crackleMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
+  const titles = [
+    "The Matrix", "The Matrix Reloaded", "The Matrix Revolutions", "John Wick", "John Wick: Chapter 2",
+    "John Wick: Chapter 3", "John Wick: Chapter 4", "Mad Max: Fury Road", "Mad Max: Beyond Thunderdome",
+    "Mad Max: The Road Warrior", "The Dark Knight", "The Dark Knight Rises", "Batman Begins", "Inception",
+    "Interstellar", "Dunkirk", "Tenet", "The Prestige", "Memento",
+    "The Shawshank Redemption", "The Green Mile", "The Silence of the Lambs", "Se7en", "Fight Club",
+    "The Departed", "Goodfellas", "The Godfather", "The Godfather Part II", "Scarface",
+    "Pulp Fiction", "Reservoir Dogs", "Django Unchained", "The Hateful Eight", "Once Upon a Time in Hollywood",
+    "Kill Bill: Volume 1", "Kill Bill: Volume 2", "Death Proof", "Jackie Brown", "True Romance",
+    "The Terminator", "Terminator 2: Judgment Day", "Terminator 3: Rise of the Machines", "Terminator Salvation",
+    "Alien", "Aliens", "Alien 3", "Alien: Resurrection", "Prometheus",
+    "Alien: Covenant", "The Thing", "The Fly", "The Blob", "The Thing from Another World",
+    "The Day the Earth Stood Still", "Forbidden Planet", "The War of the Worlds", "Invasion of the Body Snatchers",
+    "The Time Machine", "The Andromeda Strain", "Soylent Green", "Logan's Run", "Silent Running",
+    "Zardoz", "The Omega Man", "THX 1138", "A Boy and His Dog", "The Last Starfighter",
+    "Tron", "The Last Dragon", "Big Trouble in Little China", "The Goonies", "The Lost Boys",
+    "Near Dark", "Fright Night", "Lost Highway", "Mulholland Drive", "Blue Velvet",
+    "Inland Empire", "Donnie Darko", "Memento", "The Cabinet of Dr. Caligari", "The General",
+    "The Kid", "The Gold Rush", "The Phantom of the Opera", "The Hunchback of Notre Dame", "The Thief of Bagdad",
+    "Modern Times", "City Lights", "The Circus", "The Immigrant", "The Tramp",
+    "Sunrise", "The Crowd", "Strike", "October", "Earth", "Battleship Potemkin",
+    "The Last Laugh", "The Last Emperor", "Napoleon", "Intolerance", "The Birth of a Nation",
+    "The Crowd", "The Lost World", "The Most Dangerous Game", "King Kong", "Mighty Joe Young",
+    "The Wolf Man", "Frankenstein", "Bride of Frankenstein", "The Mummy", "The Invisible Man",
+    "Dracula", "The Creature from the Black Lagoon", "The Fly", "The Thing from Another World",
+    "The Day the Earth Stood Still", "Forbidden Planet", "The War of the Worlds", "Invasion of the Body Snatchers",
+    "The Time Machine", "The Andromeda Strain", "Soylent Green", "Logan's Run", "Silent Running",
+    "Zardoz", "The Omega Man", "THX 1138", "A Boy and His Dog", "The Last Starfighter",
+    "Tron", "The Last Dragon", "Big Trouble in Little China", "The Goonies", "The Lost Boys",
+    "Near Dark", "Fright Night", "Lost Highway", "Mulholland Drive", "Blue Velvet",
+    "Inland Empire", "Donnie Darko", "Memento"
+  ];
+  const genres = ["action", "sci-fi", "horror", "comedy", "drama", "thriller"];
+  const year = 1990 + Math.floor(Math.random() * 35);
+  const genre = genres[Math.floor(Math.random() * genres.length)];
+  const duration = `${Math.floor(Math.random() * 2) + 1}h ${Math.floor(Math.random() * 60)}m`;
+  
+  return {
+    id: `crackle-${i + 1}`,
+    title: titles[i % titles.length] || `Movie ${i + 1}`,
+    description: `Watch ${titles[i % titles.length] || `Movie ${i + 1}`} free on Crackle. Stream movies and TV shows without subscription.`,
+    year: year.toString(),
+    thumbnail: `https://image.tmdb.org/t/p/w500/${630000000000000000 + i}`,
+    videoUrl: `https://www.crackle.com/watch/${1000 + i}/`,
+    source: "crackle",
+    genre,
+    duration,
+    rating: ["PG", "PG-13", "R", "NR"][Math.floor(Math.random() * 4)],
+    type: "movie",
+  };
+});
+
+const popcornflixMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
+  const titles = [
+    "The Matrix", "Inception", "The Dark Knight", "John Wick", "Mad Max: Fury Road",
+    "Titanic", "Avatar", "Avengers: Endgame", "Spider-Man: No Way Home", "Joker",
+    "Black Panther", "Thor: Ragnarok", "Guardians of the Galaxy", "Iron Man", "Captain America",
+    "Wonder Woman", "Aquaman", "Batman", "Suicide Squad", "Justice League",
+    "X-Men", "Deadpool", "Logan", "Dune", "The Shawshank Redemption",
+    "Forrest Gump", "The Silence of the Lambs", "Schindler's List", "Fight Club", "The Matrix Reloaded",
+    "Terminator 2", "Jurassic Park", "Star Wars", "Harry Potter", "Lord of the Rings",
+    "The Hobbit", "Pirates of the Caribbean", "Fast & Furious", "Mission Impossible",
+    "James Bond", "Bourne Identity", "Die Hard", "Lethal Weapon", "Rocky",
+    "Creed", "Rambo", "Expendables", "Transformers", "G.I. Joe",
+    "Kung Fu Panda", "Shrek", "Toy Story", "Finding Nemo", "The Lion King",
+    "Moana", "Coco", "Soul", "Onward", "Turning Red",
+    "Encanto", "Raya", "Luca", "Elemental", "Wish",
+    "The Flash", "Shazam", "Blue Beetle", "Ant-Man", "Doctor Strange",
+    "Captain Marvel", "Black Widow", "Eternals", "Guardians Vol 3", "Loki",
+    "WandaVision", "Falcon", "Winter Soldier", "Hawkeye", "Moon Knight",
+    "The Conjuring", "Annabelle", "Insidious", "The Purge", "Get Out",
+    "Us", "The Invisible Man", "A Quiet Place", "Smile", "M3GAN",
+    "The Black Phone", "Barbarian", "Pearl", "X", "Megan",
+    "Fall", "The Menu", "Bodies Bodies Bodies", "Glass Onion", "Knives Out",
+    "Murder Mystery", "The Lost City", "Jungle Cruise", "Red Notice", "Free Guy",
+    "The Adam Project", "Spider-Man: Across", "Spider-Man: Into the Spider-Verse", "The Batman", "The Suicide Squad",
+    "Godzilla vs Kong", "Kong: Skull Island", "Godzilla: King of the Monsters", "The Chronicles of Narnia",
+    "Percy Jackson", "Eragon", "How to Train Your Dragon", "Kung Fu Panda 2", "Kung Fu Panda 3",
+    "Madagascar", "Madagascar 2", "Ice Age", "Ice Age 2", "Ice Age 3",
+    "Ice Age 4", "Ice Age 5", "Despicable Me", "Despicable Me 2", "Despicable Me 3",
+    "Minions", "Sing", "Sing 2", "The Secret Life of Pets", "The Secret Life of Pets 2"
+  ];
+  const genres = ["action", "comedy", "drama", "horror", "sci-fi", "animation", "family", "thriller", "crime"];
+  const year = 2000 + Math.floor(Math.random() * 25);
+  const genre = genres[Math.floor(Math.random() * genres.length)];
+  const duration = `${Math.floor(Math.random() * 2) + 1}h ${Math.floor(Math.random() * 60)}m`;
+  
+  return {
+    id: `popcorn-${i + 1}`,
+    title: titles[i % titles.length] || `Movie ${i + 1}`,
+    description: `Watch ${titles[i % titles.length] || `Movie ${i + 1}`} free on Popcornflix. Stream movies without subscription.`,
+    year: year.toString(),
+    thumbnail: `${TMDB_IMG}/w500/${500000000000000000 + i}`,
+    videoUrl: `https://www.popcornflix.com/watch/${100000 + i}/`,
+    source: "popcornflix",
+    genre,
+    duration,
+    rating: ["PG", "PG-13", "R", "NR"][Math.floor(Math.random() * 4)],
+    type: "movie",
+  };
+});
+
 export async function getPlutoMovies(page: number = 1, limit: number = 20): Promise<{ movies: StreamingMovie[]; total: number }> {
   const start = (page - 1) * limit;
   const end = start + limit;
   return {
     movies: plutoMovies.slice(start, end),
-    total: plutoMovies.length,
+    total: 400,
   };
 }
 
@@ -194,7 +341,7 @@ export async function getTubiMovies(page: number = 1, limit: number = 20): Promi
   const end = start + limit;
   return {
     movies: tubiMovies.slice(start, end),
-    total: tubiMovies.length,
+    total: 400,
   };
 }
 
@@ -203,7 +350,7 @@ export async function getArchiveMovies(page: number = 1, limit: number = 20): Pr
   const end = start + limit;
   return {
     movies: archiveMovies.slice(start, end),
-    total: archiveMovies.length,
+    total: 400,
   };
 }
 
@@ -212,7 +359,25 @@ export async function getYoutubeMovies(page: number = 1, limit: number = 20): Pr
   const end = start + limit;
   return {
     movies: youtubeMovies.slice(start, end),
-    total: youtubeMovies.length,
+    total: 400,
+  };
+}
+
+export async function getCrackleMovies(page: number = 1, limit: number = 20): Promise<{ movies: StreamingMovie[]; total: number }> {
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  return {
+    movies: crackleMovies.slice(start, end),
+    total: 400,
+  };
+}
+
+export async function getPopcornflixMovies(page: number = 1, limit: number = 20): Promise<{ movies: StreamingMovie[]; total: number }> {
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  return {
+    movies: popcornflixMovies.slice(start, end),
+    total: 400,
   };
 }
 
@@ -222,19 +387,25 @@ export async function searchMovies(query: string, source?: string, page: number 
     return { movies: [], total: 0 };
   }
   
-  let allMovies = [...plutoMovies, ...tubiMovies, ...archiveMovies, ...youtubeMovies];
+  let allMovies: StreamingMovie[] = [
+    ...plutoMovies, 
+    ...tubiMovies, 
+    ...archiveMovies, 
+    ...youtubeMovies, 
+    ...crackleMovies, 
+    ...popcornflixMovies
+  ];
   
   if (source && source !== "all") {
     allMovies = allMovies.filter(m => m.source === source);
   }
   
-  const filtered = allMovies.filter(m => {
-    const titleMatch = m.title.toLowerCase().includes(q);
-    const descMatch = m.description.toLowerCase().includes(q);
-    const genreMatch = m.genre?.toLowerCase().includes(q);
-    const yearMatch = m.year.includes(q);
-    return titleMatch || descMatch || genreMatch || yearMatch;
-  });
+  const filtered = allMovies.filter(m => 
+    m.title.toLowerCase().includes(q) || 
+    m.description.toLowerCase().includes(q) ||
+    m.genre?.toLowerCase().includes(q) ||
+    m.year.includes(q)
+  );
   
   const start = (page - 1) * limit;
   const end = start + limit;
@@ -246,7 +417,7 @@ export async function searchMovies(query: string, source?: string, page: number 
 }
 
 export async function getMoviesByGenre(genre: string, source?: string, page: number = 1, limit: number = 20): Promise<{ movies: StreamingMovie[]; total: number }> {
-  let allMovies = [...plutoMovies, ...tubiMovies, ...archiveMovies, ...youtubeMovies];
+  let allMovies = [...plutoMovies, ...tubiMovies, ...archiveMovies, ...youtubeMovies, ...crackleMovies, ...popcornflixMovies];
   
   if (source && source !== "all") {
     allMovies = allMovies.filter(m => m.source === source);
@@ -269,6 +440,8 @@ export function getSourceName(source: string): string {
     youtube: "YouTube",
     pluto: "Pluto TV",
     tubi: "Tubi",
+    crackle: "Crackle",
+    popcornflix: "Popcornflix",
     public: "Public Domain",
     all: "All Sources",
   };
@@ -281,7 +454,9 @@ export function getSourceColor(source: string): string {
     youtube: "bg-red-600",
     pluto: "bg-indigo-600",
     tubi: "bg-green-600",
-    public: "bg-orange-600",
+    crackle: "bg-orange-600",
+    popcornflix: "bg-yellow-600",
+    public: "bg-gray-600",
   };
   return colors[source] || "bg-gray-600";
 }
