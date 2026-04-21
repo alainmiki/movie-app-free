@@ -2,92 +2,89 @@
 
 ## Current State
 
-**Project Status**: ✅ Complete - Full movie app with free movies section
+**Project Status**: ✅ Complete - Full-featured movie platform with TV shows, search, streaming, and social features
 
-The Cineverse movie app is fully functional with TMDB API integration. It displays trending, popular, and top-rated movies. Added a new Free Movies section with Internet Archive and YouTube integration.
+The Cineverse movie app is a comprehensive platform with TMDB API integration, featuring movies, TV shows, watchlist, ratings, and multiple streaming options.
 
 ## Recently Completed
 
-- [x] **Improved home page with additional sections** (Now Playing, quick links to Stream/Free pages)
-- [x] **Enhanced player close functionality** (Escape key, click outside to close, body scroll lock)
-- [x] SPEC.md created with full movie app specification
-- [x] Dependencies installed (lucide-react for icons)
-- [x] TypeScript types created (`src/lib/types.ts`)
-- [x] TMDB API functions with fallback data (`src/lib/tmdb.ts`)
-- [x] Navbar component with navigation
-- [x] MovieCard component with hover animations
-- [x] MovieGrid component with loading states
-- [x] Skeleton loading components
-- [x] HeroSection component for featured movie
-- [x] SearchBar with debounced search
-- [x] CastList component
-- [x] Home page with multiple movie sections
-- [x] Search page with real-time results
-- [x] Movie details page with full info, cast, and similar movies
-- [x] Next.js image config for TMDB
-- [x] Build passes successfully
-- [x] **Free Movies page with tabbed interface** (Internet Archive + YouTube)
-- [x] **Lazy loading images with loading states**
-- [x] **Integrated video player modal for YouTube movies**
-- [x] **Thumbnail support for archive cards**
-- [x] **Professional UI with grid/list view toggle**
-- [x] **Genre filters and search functionality**
-- [x] **12 classic public domain movies from YouTube**
-- [x] **Improved styling with gradients and animations**
-- [x] **12 curated Internet Archive classic movies with download URLs**
-- [x] **Download buttons for offline viewing**
-- [x] **Video player modal with download option**
-- [x] **New Streaming page with Pluto TV + Tubi integration**
-- [x] **Clean professional UI with tabs and filters**
-- [x] **48+ curated movies across 4 platforms**
+- [x] **Dark/Light Theme Toggle** - Persistent theme with system preference detection
+- [x] **Watchlist** - Add/remove movies with localStorage persistence
+- [x] **Recently Watched** - Track viewing history with progress
+- [x] **Film Grain Overlay** - Cinematic visual effect
+- [x] **TV Shows Support** - Browse and view TV show details with seasons
+- [x] **Infinite Scroll** - Load more results on search page
+- [x] **Voice Search** - Use microphone for search input
+- [x] **Autocomplete Suggestions** - Search suggestions while typing
+- [x] **Movie Ratings** - Rate movies 1-10 stars, persisted locally
+- [x] **Share Functionality** - Share movies via Twitter, Facebook, Email, Copy Link
+- [x] **Enhanced Player Close** - Escape key, click outside, body scroll lock
+- [x] **Home Page Improvements** - Now Playing, Continue Watching, quick action cards
 
 ## Current Structure
 
 | File/Directory | Purpose | Status |
 |----------------|---------|--------|
 | `src/app/page.tsx` | Home page with hero + movie grids | ✅ Complete |
-| `src/app/search/page.tsx` | Search page with debounced search | ✅ Complete |
-| `src/app/movie/[id]/page.tsx` | Movie details with cast & similar | ✅ Complete |
-| `src/app/free/page.tsx` | Public domain movies (Archive + YouTube) | ✅ Complete |
-| `src/app/streaming/page.tsx` | Stream movies (Pluto TV + Tubi) | ✅ Complete |
+| `src/app/search/page.tsx` | Search with infinite scroll, voice | ✅ Complete |
+| `src/app/movie/[id]/page.tsx` | Movie details with ratings, share | ✅ Complete |
+| `src/app/tv/page.tsx` | TV shows browse page | ✅ Complete |
+| `src/app/tv/[id]/page.tsx` | TV show details with seasons | ✅ Complete |
+| `src/app/watchlist/page.tsx` | User watchlist | ✅ Complete |
+| `src/app/free/page.tsx` | Free movies (Archive + YouTube) | ✅ Complete |
+| `src/app/streaming/page.tsx` | Streaming movies | ✅ Complete |
 | `src/components/` | UI components | ✅ Complete |
+| `src/hooks/` | Custom React hooks | ✅ Complete |
 | `src/lib/types.ts` | TypeScript interfaces | ✅ Complete |
-| `src/lib/tmdb.ts` | API functions with fallback | ✅ Complete |
-| `src/lib/archive.ts` | Internet Archive + YouTube data | ✅ Complete |
-| `src/lib/streaming.ts` | Pluto TV + Tubi movie data | ✅ Complete |
+| `src/lib/tmdb.ts` | API functions with TV shows | ✅ Complete |
 
 ## Features
 
 1. **Home Page**
    - Hero section with featured movie
+   - Continue Watching section
    - Now Playing section
    - Popular movies grid
    - Top rated movies grid
    - Quick links to Stream and Free pages
-   - Free Movies link in navigation
 
-2. **Free Movies Page**
-   - Tabbed interface (Internet Archive / YouTube)
-   - Lazy loading images with shimmer effect
-   - Video player modal for YouTube
-   - Thumbnail previews from Archive.org
+2. **TV Shows**
+   - Browse trending and popular TV shows
+   - Detailed TV show pages with seasons
+   - Cast and similar shows
 
-3. **Search Page**
-   - Debounced search (300ms)
-   - Real-time results
-   - Loading states
+3. **Search**
+   - Infinite scroll pagination
+   - Voice search (microphone)
+   - Autocomplete suggestions
+   - Filter by Movies/TV Shows
 
 4. **Movie Details**
-   - Backdrop image with gradient
-   - Poster, title, rating, runtime
-   - Genre tags
-   - Director info
-   - Cast list
-   - Similar movies
+   - Backdrop with gradient
+   - Rating system (1-10 stars)
+   - Share to social media
+   - Add to watchlist
+   - Trailer playback
+   - Where to watch providers
 
-## API Configuration
+5. **Watchlist**
+   - Save movies to watchlist
+   - Remove from watchlist
+   - Clear all
 
-Set `NEXT_PUBLIC_TMDB_API_KEY` in environment to use real TMDB API.
+6. **Free Movies Page**
+   - Internet Archive tab
+   - YouTube tab
+   - Grid/List view toggle
+   - Genre filters
+
+## Custom Hooks
+
+- `useTheme` - Theme management
+- `useWatchlist` - Watchlist CRUD operations
+- `useRecentlyWatched` - Viewing history
+- `useMovieRatings` - Movie rating system
+- `useInfiniteScroll` - Infinite scroll logic
 
 ## Tech Stack
 
@@ -97,14 +94,7 @@ Set `NEXT_PUBLIC_TMDB_API_KEY` in environment to use real TMDB API.
 - Tailwind CSS 4
 - Lucide React icons
 - TMDB API (with fallback)
-
-## Session History
-
-| Date | Changes |
-|------|---------|
-| Initial | Template created with base setup |
-| Earlier | Full Cineverse movie app built |
-| Today | Added Free Movies page with tabbed interface, YouTube videos, lazy loading, and video player modal |
+- react-intersection-observer
 
 ## Quick Start
 
