@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "archive.org",
         port: "",
-        pathname: "/services/img/**",
+        pathname: "/**",
       },
       {
         protocol: "https",
