@@ -20,7 +20,8 @@ The Cineverse movie app is a comprehensive platform with TMDB API integration, f
 - [x] **Share Functionality** - Share movies via Twitter, Facebook, Email, Copy Link
 - [x] **Enhanced Player Close** - Escape key, click outside, body scroll lock
 - [x] **Home Page Improvements** - Now Playing, Continue Watching, quick action cards
-- [x] **Streaming Page Fix** - Added Crackle and Popcornflix tabs, replaced fake iframes with external redirect links
+- [x] **Streaming Page Fix** - Added Crackle and Popcornflix tabs, replaced fake iframes with working video URLs
+- [x] **Streaming Platform URLs** - Fixed Crackle (crackle.media), Pluto TV, Tubi, Popcornflix URLs to point to direct watch pages
 
 ## Current Structure
 

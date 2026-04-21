@@ -63,12 +63,12 @@ const plutoMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
     description: `Watch ${movieTitle} free on Pluto TV. An exciting adventure awaits with stunning visuals and captivating storytelling.`,
     year: year.toString(),
     thumbnail: `${TMDB_IMG}/w500/${tmdbId}`,
-    source: "pluto",
+    source: "pluto" as const,
     genre,
     duration,
     rating: ["PG", "PG-13", "R", "NR"][Math.floor(Math.random() * 4)],
-    type: "movie",
-    externalUrl: `https://pluto.tv/search?q=${encodeURIComponent(movieTitle)}`,
+    type: "movie" as const,
+    videoUrl: `https://pluto.tv/en/on-demand/movies/${movieTitle.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
   };
 });
 
@@ -110,6 +110,7 @@ const tubiMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
   const genre = genres[Math.floor(Math.random() * genres.length)];
   const duration = `${Math.floor(Math.random() * 2) + 1}h ${Math.floor(Math.random() * 60)}m`;
   const movieTitle = titles[i % titles.length] || `Movie ${i + 1}`;
+  const slug = movieTitle.toLowerCase().replace(/[^a-z0-9]/g, '-');
   
   return {
     id: `tubi-${i + 1}`,
@@ -117,28 +118,28 @@ const tubiMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
     description: `Stream ${movieTitle} free on Tubi. Premium entertainment without the subscription.`,
     year: year.toString(),
     thumbnail: `${TMDB_IMG}/w500/${500000000000000000 + i}`,
-    source: "tubi",
+    source: "tubi" as const,
     genre,
     duration,
     rating: ["PG", "PG-13", "R", "NR", "TV-14"][Math.floor(Math.random() * 5)],
-    type: "movie",
-    externalUrl: `https://tubi.tv/search?q=${encodeURIComponent(movieTitle)}`,
+    type: "movie" as const,
+    videoUrl: `https://tubi.tv/title/${slug}`,
   };
 });
 
 const archiveMovies: StreamingMovie[] = [
-  { id: "archive-1", title: "Night of the Living Dead", description: "A classic horror film from 1968. A group of people trapped in a farmhouse must survive a night of attacks from a horde of zombies.", year: "1968", thumbnail: "https://archive.org/download/night_of_the_living_dead_67/night_of_the_living_dead_67.thumbs/night_of_the_living_dead_67_00001.jpg", source: "archive" as const, genre: "horror", duration: "1h 36m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/night_of_the_living_dead_67" },
-  { id: "archive-2", title: "Plan 9 from Outer Space", description: "Horror aliens attempt to conquer the Earth using undead humans as soldiers.", year: "1959", thumbnail: "https://archive.org/download/plan09fromouterspace/plan09fromouterspace.thumbs/Plan9_00001.jpg", source: "archive" as const, genre: "sci-fi", duration: "1h 19m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/plan09fromouterspace" },
-  { id: "archive-3", title: "Reefer Madness", description: "A morality tale about the dangers of marijuana.", year: "1936", thumbnail: "https://archive.org/download/reefer_madness_1938/reefer_madness_1938.thumbs/Thumb_001.jpg", source: "archive" as const, genre: "drama", duration: "1h 6m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/reefer_madness_1938" },
-  { id: "archive-4", title: "The Little Shop of Horrors", description: "A clumsy florist discovers a plant with a taste for human flesh.", year: "1960", thumbnail: "https://archive.org/download/LittleShopofHorrors720P/LittleShopofHorrors720P.thumbs/LittleShopofHorrors720P_00001.jpg", source: "archive" as const, genre: "horror", duration: "1h 12m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/LittleShopofHorrors720P" },
-  { id: "archive-5", title: "Metropolis", description: "A futuristic city is divided between the working class and the city planners.", year: "1927", thumbnail: "https://archive.org/download/Metropolis_1927/Metropolis_1927.thumbs/Metropolis_1927_01.jpg", source: "archive" as const, genre: "sci-fi", duration: "2h 33m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/Metropolis_1927" },
-  { id: "archive-6", title: "Nosferatu", description: "An unauthorized adaptation of Bram Stoker's Dracula.", year: "1922", thumbnail: "https://archive.org/download/nosferatu_201603/nosferatu_201603.thumbs/Nosferatu_001.jpg", source: "archive" as const, genre: "horror", duration: "1h 34m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/nosferatu_201603" },
-  { id: "archive-7", title: "The Cabinet of Dr. Caligari", description: "A hypnotic doctor and a somnambulist commit murders.", year: "1920", thumbnail: "https://archive.org/download/cabinetofdrcaligari_201903/cabinetofdrcaligari_201903.thumbs/Cabinet_of_Dr_Caligari_00.jpg", source: "archive" as const, genre: "horror", duration: "1h 16m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/cabinetofdrcaligari_201903" },
-  { id: "archive-8", title: "The Great Train Robbery", description: "Pioneering silent western film about a group of bandits robbing a train.", year: "1903", thumbnail: "https://archive.org/download/GreatTrainRobbery/GreatTrainRobbery.thumbs/gtrain.jpg", source: "archive" as const, genre: "action", duration: "11m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/GreatTrainRobbery" },
-  { id: "archive-9", title: "The General", description: "A train engineer and his fiancée are caught up in a railroad war.", year: "1926", thumbnail: "https://archive.org/download/TheGeneral_773/TheGeneral_773.thumbs/The_General_001.jpg", source: "archive" as const, genre: "action", duration: "1h 7m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/TheGeneral_773" },
-  { id: "archive-10", title: "Modern Times", description: "Charlie Chaplin's iconic critique of industrialization.", year: "1936", thumbnail: "https://archive.org/download/moderntimes_201601/moderntimes_201601.thumbs/ModernTimes_00.jpg", source: "archive" as const, genre: "comedy", duration: "1h 27m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/moderntimes_201601" },
-  { id: "archive-11", title: "The Kid", description: "A tramp cares for an abandoned child.", year: "1921", thumbnail: "https://archive.org/download/thekid_201704/thekid_201704.thumbs/The_Kid_00.jpg", source: "archive" as const, genre: "drama", duration: "1h 8m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/thekid_201704" },
-  { id: "archive-12", title: "King Kong", description: "A giant ape falls for a beauty and is captured.", year: "1933", thumbnail: "https://archive.org/download/king_kong_331/king_kong_331.thumbs/KK_00001.jpg", source: "archive" as const, genre: "horror", duration: "1h 40m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/king_kong_331" },
+  { id: "archive-1", title: "Night of the Living Dead", description: "A classic horror film from 1968. A group of people trapped in a farmhouse must survive a night of attacks from a horde of zombies.", year: "1968", thumbnail: "https://archive.org/download/night_of_the_living_dead_67/night_of_the_living_dead_67.thumbs/night_of_the_living_dead_67_00001.jpg", source: "archive" as const, genre: "horror", duration: "1h 36m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/night_of_the_living_dead_67" },
+  { id: "archive-2", title: "Plan 9 from Outer Space", description: "Horror aliens attempt to conquer the Earth using undead humans as soldiers.", year: "1959", thumbnail: "https://archive.org/download/plan09fromouterspace/plan09fromouterspace.thumbs/Plan9_00001.jpg", source: "archive" as const, genre: "sci-fi", duration: "1h 19m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/plan09fromouterspace" },
+  { id: "archive-3", title: "Reefer Madness", description: "A morality tale about the dangers of marijuana.", year: "1936", thumbnail: "https://archive.org/download/reefer_madness_1938/reefer_madness_1938.thumbs/Thumb_001.jpg", source: "archive" as const, genre: "drama", duration: "1h 6m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/reefer_madness_1938" },
+  { id: "archive-4", title: "The Little Shop of Horrors", description: "A clumsy florist discovers a plant with a taste for human flesh.", year: "1960", thumbnail: "https://archive.org/download/LittleShopofHorrors720P/LittleShopofHorrors720P.thumbs/LittleShopofHorrors720P_00001.jpg", source: "archive" as const, genre: "horror", duration: "1h 12m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/LittleShopofHorrors720P" },
+  { id: "archive-5", title: "Metropolis", description: "A futuristic city is divided between the working class and the city planners.", year: "1927", thumbnail: "https://archive.org/download/Metropolis_1927/Metropolis_1927.thumbs/Metropolis_1927_01.jpg", source: "archive" as const, genre: "sci-fi", duration: "2h 33m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/Metropolis_1927" },
+  { id: "archive-6", title: "Nosferatu", description: "An unauthorized adaptation of Bram Stoker's Dracula.", year: "1922", thumbnail: "https://archive.org/download/nosferatu_201603/nosferatu_201603.thumbs/Nosferatu_001.jpg", source: "archive" as const, genre: "horror", duration: "1h 34m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/nosferatu_201603" },
+  { id: "archive-7", title: "The Cabinet of Dr. Caligari", description: "A hypnotic doctor and a somnambulist commit murders.", year: "1920", thumbnail: "https://archive.org/download/cabinetofdrcaligari_201903/cabinetofdrcaligari_201903.thumbs/Cabinet_of_Dr_Caligari_00.jpg", source: "archive" as const, genre: "horror", duration: "1h 16m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/cabinetofdrcaligari_201903" },
+  { id: "archive-8", title: "The Great Train Robbery", description: "Pioneering silent western film about a group of bandits robbing a train.", year: "1903", thumbnail: "https://archive.org/download/GreatTrainRobbery/GreatTrainRobbery.thumbs/gtrain.jpg", source: "archive" as const, genre: "action", duration: "11m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/GreatTrainRobbery" },
+  { id: "archive-9", title: "The General", description: "A train engineer and his fiancée are caught up in a railroad war.", year: "1926", thumbnail: "https://archive.org/download/TheGeneral_773/TheGeneral_773.thumbs/The_General_001.jpg", source: "archive" as const, genre: "action", duration: "1h 7m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/TheGeneral_773" },
+  { id: "archive-10", title: "Modern Times", description: "Charlie Chaplin's iconic critique of industrialization.", year: "1936", thumbnail: "https://archive.org/download/moderntimes_201601/moderntimes_201601.thumbs/ModernTimes_00.jpg", source: "archive" as const, genre: "comedy", duration: "1h 27m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/moderntimes_201601" },
+  { id: "archive-11", title: "The Kid", description: "A tramp cares for an abandoned child.", year: "1921", thumbnail: "https://archive.org/download/thekid_201704/thekid_201704.thumbs/The_Kid_00.jpg", source: "archive" as const, genre: "drama", duration: "1h 8m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/thekid_201704" },
+  { id: "archive-12", title: "King Kong", description: "A giant ape falls for a beauty and is captured.", year: "1933", thumbnail: "https://archive.org/download/king_kong_331/king_kong_331.thumbs/KK_00001.jpg", source: "archive" as const, genre: "horror", duration: "1h 40m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/king_kong_331" },
 ].concat(Array.from({ length: 388 }, (_, i) => {
   const titles = [
     "The Thief of Bagdad", "The Gold Rush", "City Lights", "The Circus", "Sunrise",
@@ -157,19 +158,19 @@ const archiveMovies: StreamingMovie[] = [
     description: `A classic public domain film from the Internet Archive collection.`,
     year: year.toString(),
     thumbnail: `${TMDB_IMG}/w500/${300000000000000000 + i}`,
-    source: "archive",
+    source: "archive" as const,
     genre,
     duration,
     rating: "NR",
-    type: "movie",
-    externalUrl: `https://archive.org/search?query=${encodeURIComponent(movieTitle)}`,
+    type: "movie" as const,
+    videoUrl: `https://archive.org/embed/${movieTitle.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
   };
 }));
 
 const youtubeMovies: StreamingMovie[] = [
-  { id: "youtube-1", title: "Night of the Living Dead", description: "A classic horror film from 1968.", year: "1968", thumbnail: "https://archive.org/download/night_of_the_living_dead_67/night_of_the_living_dead_67.thumbs/night_of_the_living_dead_67_00001.jpg", source: "youtube" as const, genre: "horror", duration: "1h 36m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/night_of_the_living_dead_67" },
-  { id: "youtube-2", title: "Reefer Madness", description: "A morality tale about the dangers of marijuana.", year: "1936", thumbnail: "https://archive.org/download/reefer_madness_1938/reefer_madness_1938.thumbs/Thumb_001.jpg", source: "youtube" as const, genre: "drama", duration: "1h 6m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/reefer_madness_1938" },
-  { id: "youtube-3", title: "Plan 9 from Outer Space", description: "Horror aliens attempt to conquer the Earth.", year: "1959", thumbnail: "https://archive.org/download/plan09fromouterspace/plan09fromouterspace.thumbs/Plan9_00001.jpg", source: "youtube" as const, genre: "sci-fi", duration: "1h 19m", rating: "NR", type: "movie" as const, externalUrl: "https://archive.org/details/plan09fromouterspace" },
+  { id: "youtube-1", title: "Night of the Living Dead", description: "A classic horror film from 1968.", year: "1968", thumbnail: "https://archive.org/download/night_of_the_living_dead_67/night_of_the_living_dead_67.thumbs/night_of_the_living_dead_67_00001.jpg", source: "youtube" as const, genre: "horror", duration: "1h 36m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/night_of_the_living_dead_67" },
+  { id: "youtube-2", title: "Reefer Madness", description: "A morality tale about the dangers of marijuana.", year: "1936", thumbnail: "https://archive.org/download/reefer_madness_1938/reefer_madness_1938.thumbs/Thumb_001.jpg", source: "youtube" as const, genre: "drama", duration: "1h 6m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/reefer_madness_1938" },
+  { id: "youtube-3", title: "Plan 9 from Outer Space", description: "Horror aliens attempt to conquer the Earth.", year: "1959", thumbnail: "https://archive.org/download/plan09fromouterspace/plan09fromouterspace.thumbs/Plan9_00001.jpg", source: "youtube" as const, genre: "sci-fi", duration: "1h 19m", rating: "NR", type: "movie" as const, videoUrl: "https://archive.org/embed/plan09fromouterspace" },
 ].concat(Array.from({ length: 397 }, (_, i) => {
   const titles = ["The Little Shop of Horrors", "Metropolis", "Nosferatu", "King Kong", "Modern Times", "The General"];
   const genres = ["action", "sci-fi", "horror", "comedy", "drama", "thriller"];
@@ -184,12 +185,12 @@ const youtubeMovies: StreamingMovie[] = [
     description: `Watch ${movieTitle} on YouTube. Free public domain movie.`,
     year: year.toString(),
     thumbnail: `${TMDB_IMG}/w500/${400000000000000000 + i}`,
-    source: "youtube",
+    source: "youtube" as const,
     genre,
     duration,
     rating: "NR",
-    type: "movie",
-    externalUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(movieTitle)}+full+movie`,
+    type: "movie" as const,
+    videoUrl: `https://archive.org/embed/${movieTitle.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
   };
 }));
 
@@ -227,12 +228,12 @@ const crackleMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) => {
     description: `Discover ${movieTitle} on Crackle. Stream movies and TV shows without subscription.`,
     year: year.toString(),
     thumbnail: `${TMDB_IMG}/w500/${630000000000000000 + i}`,
-    source: "crackle",
+    source: "crackle" as const,
     genre,
     duration,
     rating: ["PG", "PG-13", "R", "NR"][Math.floor(Math.random() * 4)],
-    type: "movie",
-    externalUrl: `https://www.crackle.com/search?q=${encodeURIComponent(movieTitle)}`,
+    type: "movie" as const,
+    externalUrl: `https://crackle.media/search?q=${encodeURIComponent(movieTitle)}`,
   };
 });
 
@@ -262,6 +263,7 @@ const popcornflixMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) =
   const genre = genres[Math.floor(Math.random() * genres.length)];
   const duration = `${Math.floor(Math.random() * 2) + 1}h ${Math.floor(Math.random() * 60)}m`;
   const movieTitle = titles[i % titles.length] || `Movie ${i + 1}`;
+  const slug = movieTitle.toLowerCase().replace(/[^a-z0-9]/g, '-');
   
   return {
     id: `popcorn-${i + 1}`,
@@ -269,12 +271,12 @@ const popcornflixMovies: StreamingMovie[] = Array.from({ length: 400 }, (_, i) =
     description: `Watch ${movieTitle} free on Popcornflix. Stream movies without subscription.`,
     year: year.toString(),
     thumbnail: `${TMDB_IMG}/w500/${500000000000000000 + i}`,
-    source: "popcornflix",
+    source: "popcornflix" as const,
     genre,
     duration,
     rating: ["PG", "PG-13", "R", "NR"][Math.floor(Math.random() * 4)],
-    type: "movie",
-    externalUrl: `https://www.popcornflix.com/search?q=${encodeURIComponent(movieTitle)}`,
+    type: "movie" as const,
+    videoUrl: `https://popcornflix.com/watch/${slug}`,
   };
 });
 

@@ -205,7 +205,13 @@ export function StreamingClient({ initialTab = "all", initialQuery = "", initial
               {movies.map((movie) => (
                 <div
                   key={movie.id}
-                  onClick={() => movie.externalUrl && window.open(movie.externalUrl, '_blank')}
+                  onClick={() => {
+                    if (movie.videoUrl) {
+                      setSelectedMovie(movie);
+                    } else if (movie.externalUrl) {
+                      window.open(movie.externalUrl, '_blank');
+                    }
+                  }}
                   className="group relative overflow-hidden rounded-2xl bg-[#1f1f1f] transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl cursor-pointer"
                 >
                   <div className="aspect-[2/3] relative bg-[#2a2a2a] overflow-hidden">
@@ -231,7 +237,7 @@ export function StreamingClient({ initialTab = "all", initialQuery = "", initial
                     
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                     
-                    {movie.externalUrl && (
+                    {movie.videoUrl && (
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
                         <div className="w-16 h-16 rounded-full bg-[#ff6b6b] flex items-center justify-center shadow-lg transform scale-50 group-hover:scale-100 transition-transform">
                           <Play className="w-8 h-8 fill-white text-white ml-1" />
@@ -274,9 +280,9 @@ export function StreamingClient({ initialTab = "all", initialQuery = "", initial
                           {movie.genre}
                         </span>
                       )}
-                      {movie.externalUrl && (
+                      {movie.videoUrl && (
                         <a
-                          href={movie.externalUrl}
+                          href={movie.videoUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
@@ -296,7 +302,13 @@ export function StreamingClient({ initialTab = "all", initialQuery = "", initial
               {movies.map((movie) => (
                 <div
                   key={movie.id}
-                  onClick={() => movie.externalUrl && window.open(movie.externalUrl, '_blank')}
+                  onClick={() => {
+                    if (movie.videoUrl) {
+                      setSelectedMovie(movie);
+                    } else if (movie.externalUrl) {
+                      window.open(movie.externalUrl, '_blank');
+                    }
+                  }}
                   className="group flex gap-4 p-4 bg-[#1f1f1f] rounded-2xl hover:bg-[#252525] transition-all cursor-pointer"
                 >
                   <div className="relative w-32 sm:w-40 flex-shrink-0 aspect-[2/3] rounded-xl overflow-hidden bg-[#2a2a2a]">
@@ -338,9 +350,9 @@ export function StreamingClient({ initialTab = "all", initialQuery = "", initial
                       {movie.genre && <span className="px-2 py-0.5 bg-[#2a2a2a] rounded text-xs">{movie.genre}</span>}
                       {movie.rating && <span className="flex items-center gap-1"><Star className="w-4 h-4 fill-[#ffd93d] text-[#ffd93d]" />{movie.rating}</span>}
                     </div>
-                    {movie.externalUrl && (
+                    {movie.videoUrl && (
                       <a
-                        href={movie.externalUrl}
+                        href={movie.videoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
@@ -408,7 +420,7 @@ export function StreamingClient({ initialTab = "all", initialQuery = "", initial
         )}
       </div>
 
-      {selectedMovie && selectedMovie.externalUrl && (
+      {selectedMovie && selectedMovie.videoUrl && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 animate-fade-in"
           onClick={(e) => e.target === e.currentTarget && setSelectedMovie(null)}
@@ -424,7 +436,7 @@ export function StreamingClient({ initialTab = "all", initialQuery = "", initial
             
             <div className="relative aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl">
               <iframe
-                src={selectedMovie.externalUrl}
+                src={selectedMovie.videoUrl}
                 title={selectedMovie.title}
                 className="w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
