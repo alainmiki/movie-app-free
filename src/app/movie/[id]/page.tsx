@@ -8,6 +8,7 @@ import { MovieGrid } from "@/components/MovieGrid";
 import { CastList } from "@/components/CastList";
 import { WatchProvidersList } from "@/components/WatchProviders";
 import { MovieTrailer } from "@/components/MovieTrailer";
+import { MovieActions } from "@/components/MovieActions";
 
 interface MoviePageProps {
   params: Promise<{ id: string }>;
@@ -154,6 +155,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
             <div className="flex flex-wrap gap-4 pt-4">
               <MovieTrailer videos={videos} />
+              <MovieActions movieId={movie.id} title={movie.title} overview={movie.overview} />
             </div>
 
             <div className="pt-4">
