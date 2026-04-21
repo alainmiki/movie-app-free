@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Play, X, Search, Filter, Clock, Calendar, Grid, List, Star, Download, ExternalLink } from "lucide-react";
 import Image from "next/image";
 
+const closeModalStyles = "absolute -top-14 right-0 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-[#ff6b6b] rounded-full text-white transition-colors";
+
 interface FreeMovie {
   id: string;
   title: string;
@@ -57,6 +59,27 @@ export function FreeMoviesClient({ initialTab = "archive", initialQuery = "", ar
     : currentMovies.filter(m => m.genre === filterGenre);
 
   const genres = ["all", "drama", "comedy", "action", "documentary", "horror", "sci-fi"];
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && selectedMovie) {
+        setSelectedMovie(null);
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [selectedMovie]);
+
+  useEffect(() => {
+    if (selectedMovie) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedMovie]);
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
@@ -344,11 +367,15 @@ export function FreeMoviesClient({ initialTab = "archive", initialQuery = "", ar
       </div>
 
       {selectedMovie && selectedMovie.videoUrl && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 animate-fade-in">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 animate-fade-in"
+          onClick={(e) => e.target === e.currentTarget && setSelectedMovie(null)}
+        >
           <div className="relative w-full max-w-5xl">
             <button
               onClick={() => setSelectedMovie(null)}
-              className="absolute -top-14 right-0 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+              className={closeModalStyles}
+              aria-label="Close player"
             >
               <X className="w-6 h-6" />
             </button>

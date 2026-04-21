@@ -36,6 +36,7 @@ const sourceInfo: Record<string, { name: string; color: string; icon: string }> 
 };
 
 const genres = ["all", "action", "comedy", "drama", "horror", "sci-fi", "animation", "family", "crime", "thriller"];
+const closeModalStyles = "absolute -top-14 right-0 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-[#ff6b6b] rounded-full text-white transition-colors";
 
 export function StreamingClient({ initialTab = "all", initialQuery = "", initialGenre = "all", initialPage = 1, movies, totalMovies = 0, totalPages = 1, allMoviesCount }: StreamingClientProps) {
   const router = useRouter();
@@ -74,6 +75,27 @@ export function StreamingClient({ initialTab = "all", initialQuery = "", initial
     setCurrentPage(1);
     router.push(`/streaming?tab=${activeTab}&query=${searchQuery}&genre=${g}&page=1`);
   };
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && selectedMovie) {
+        setSelectedMovie(null);
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [selectedMovie]);
+
+  useEffect(() => {
+    if (selectedMovie) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedMovie]);
 
   const tabs = [
     { id: "all", label: "All", count: allMoviesCount.all, icon: MonitorPlay },
@@ -387,11 +409,15 @@ export function StreamingClient({ initialTab = "all", initialQuery = "", initial
       </div>
 
       {selectedMovie && selectedMovie.videoUrl && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 animate-fade-in">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 animate-fade-in"
+          onClick={(e) => e.target === e.currentTarget && setSelectedMovie(null)}
+        >
           <div className="relative w-full max-w-4xl">
             <button
               onClick={() => setSelectedMovie(null)}
-              className="absolute -top-14 right-0 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+              className={closeModalStyles}
+              aria-label="Close player"
             >
               <X className="w-6 h-6" />
             </button>

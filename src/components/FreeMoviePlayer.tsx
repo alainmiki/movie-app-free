@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Play, X, ExternalLink, Loader2 } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Play, X } from "lucide-react";
 
 interface FreeMoviePlayerProps {
   title: string;
@@ -10,7 +10,31 @@ interface FreeMoviePlayerProps {
 
 export function FreeMoviePlayer({ title, videoUrl }: FreeMoviePlayerProps) {
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(true);
+
+  const closePlayer = useCallback(() => {
+    setShowModal(false);
+  }, []);
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && showModal) {
+        closePlayer();
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [showModal, closePlayer]);
+
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showModal]);
 
   if (!videoUrl) {
     return (
@@ -37,23 +61,25 @@ export function FreeMoviePlayer({ title, videoUrl }: FreeMoviePlayerProps) {
       </button>
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
-          <div className="relative w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 animate-fade-in"
+          onClick={(e) => e.target === e.currentTarget && closePlayer()}
+        >
+          <div className="relative w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl">
             <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors"
+              onClick={closePlayer}
+              className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-black/50 hover:bg-[#ff6b6b] rounded-full text-white transition-colors"
+              aria-label="Close player"
             >
               <X className="w-6 h-6" />
             </button>
-            <div className="flex items-center justify-center h-full">
-              <iframe
-                src={videoUrl}
-                title={title}
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
+            <iframe
+              src={videoUrl}
+              title={title}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
         </div>
       )}

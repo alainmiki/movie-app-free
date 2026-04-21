@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Play, X } from "lucide-react";
 import { MovieVideos } from "@/lib/types";
 
@@ -20,6 +20,32 @@ export function MovieTrailer({ videos }: MovieTrailerProps) {
   );
   const ytVideo = trailer || teaser;
 
+  const closeTrailer = useCallback(() => {
+    setShowModal(false);
+    setTrailerKey(null);
+  }, []);
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && showModal) {
+        closeTrailer();
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [showModal, closeTrailer]);
+
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showModal]);
+
   if (!ytVideo) {
     return (
       <div className="flex items-center gap-2 text-[#9ca3af]">
@@ -34,11 +60,6 @@ export function MovieTrailer({ videos }: MovieTrailerProps) {
     setShowModal(true);
   };
 
-  const closeTrailer = () => {
-    setShowModal(false);
-    setTrailerKey(null);
-  };
-
   return (
     <>
       <button
@@ -50,11 +71,15 @@ export function MovieTrailer({ videos }: MovieTrailerProps) {
       </button>
 
       {showModal && trailerKey && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
-          <div className="relative w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 animate-fade-in"
+          onClick={(e) => e.target === e.currentTarget && closeTrailer()}
+        >
+          <div className="relative w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl">
             <button
               onClick={closeTrailer}
-              className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors"
+              className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-black/50 hover:bg-[#ff6b6b] rounded-full text-white transition-colors"
+              aria-label="Close trailer"
             >
               <X className="w-6 h-6" />
             </button>
