@@ -155,7 +155,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
             <div className="flex flex-wrap gap-4 pt-4">
               <MovieTrailer videos={videos} />
-              <MovieActions movieId={movie.id} title={movie.title} overview={movie.overview} />
+              <MovieActions movie={movie} title={movie.title} overview={movie.overview} />
             </div>
 
             <div className="pt-4">

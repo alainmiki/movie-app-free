@@ -1,19 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { Star, Share2, Link as LinkIcon, Mail, Check, Bookmark, Plus, Check as CheckIcon } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Star, Share2, Link as LinkIcon, Mail, Check, Plus, Check as CheckIcon } from "lucide-react";
 import { useMovieRatings } from "@/hooks/useMovieRatings";
 import { useWatchlist } from "@/hooks/useWatchlist";
-import { Movie } from "@/lib/types";
+import { Movie, MovieDetails } from "@/lib/types";
 
 interface MovieActionsProps {
-  movieId: number;
+  movie: Movie | MovieDetails;
   title: string;
   overview: string;
-  movie?: Movie;
 }
 
-export function MovieActions({ movieId, title, overview, movie }: MovieActionsProps) {
+export function MovieActions({ movie, title, overview }: MovieActionsProps) {
+  const movieId = movie.id;
   const { rateMovie, getRating } = useMovieRatings();
   const { isInWatchlist, toggleWatchlist } = useWatchlist();
   
@@ -21,18 +21,17 @@ export function MovieActions({ movieId, title, overview, movie }: MovieActionsPr
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const userRating = getRating(movieId);
+  const isClient = typeof window !== "undefined";
+  const userRating = isClient ? getRating(movieId) : 0;
   const displayRating = hoverRating || userRating || 0;
-  const inWatchlist = isInWatchlist(movieId);
+  const inWatchlist = isClient && isInWatchlist(movieId);
 
   const handleRate = (rating: number) => {
     rateMovie(movieId, rating);
   };
 
   const handleAddToWatchlist = () => {
-    if (movie) {
-      toggleWatchlist(movie);
-    }
+    toggleWatchlist(movie);
   };
 
   const copyToClipboard = async () => {
@@ -67,18 +66,15 @@ export function MovieActions({ movieId, title, overview, movie }: MovieActionsPr
     setShowShareOptions(false);
   };
 
-  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
-
   return (
     <div className="flex flex-wrap items-center gap-4">
       <button
         onClick={handleAddToWatchlist}
-        disabled={!movie}
         className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
           inWatchlist
             ? "bg-[#ff6b6b] text-white"
             : "bg-[#1f1f1f] hover:bg-[#2a2a2a] text-white"
-        } disabled:opacity-50 disabled:cursor-not-allowed`}
+        }`}
       >
         {inWatchlist ? <CheckIcon className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
         {inWatchlist ? "In Watchlist" : "Watchlist"}

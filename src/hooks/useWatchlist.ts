@@ -51,13 +51,19 @@ export function useWatchlist() {
 
   const toggleWatchlist = useCallback(
     (movie: Movie) => {
-      if (isInWatchlist(movie.id)) {
-        removeFromWatchlist(movie.id);
-      } else {
-        addToWatchlist(movie);
-      }
+      setWatchlist((prev) => {
+        const exists = prev.some((m) => m.id === movie.id);
+        let newList: WatchlistItem[];
+        if (exists) {
+          newList = prev.filter((m) => m.id !== movie.id);
+        } else {
+          newList = [...prev, { ...movie, addedAt: Date.now() }];
+        }
+        saveToStorage(newList);
+        return newList;
+      });
     },
-    [isInWatchlist, addToWatchlist, removeFromWatchlist]
+    [saveToStorage]
   );
 
   const clearWatchlist = useCallback(() => {
