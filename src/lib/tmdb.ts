@@ -1,4 +1,4 @@
-import { Movie, MovieDetails, Credits, MoviesResponse, SearchResponse, WatchProviders, MovieVideos } from "./types";
+import { Movie, MovieDetails, Credits, MoviesResponse, SearchResponse, WatchProviders, MovieVideos, TVShow, TVShowsResponse, TVShowDetails } from "./types";
 
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -179,5 +179,122 @@ export async function getMovieVideos(id: string): Promise<MovieVideos> {
       id: parseInt(id),
       results: [],
     };
+  }
+}
+
+export async function getTrendingTVShows(): Promise<TVShow[]> {
+  try {
+    const data = await fetchTMDB<TVShowsResponse>("/trending/tv/week", { language: "en-US" });
+    return data.results;
+  } catch {
+    return [];
+  }
+}
+
+export async function getPopularTVShows(page: number = 1): Promise<TVShowsResponse> {
+  try {
+    return await fetchTMDB<TVShowsResponse>("/tv/popular", {
+      language: "en-US",
+      page: page.toString(),
+    });
+  } catch {
+    return {
+      page: 1,
+      results: [],
+      total_pages: 1,
+      total_results: 0,
+    };
+  }
+}
+
+export async function getTVShowDetails(id: string): Promise<TVShowDetails | null> {
+  try {
+    return await fetchTMDB<TVShowDetails>(`/tv/${id}`, { language: "en-US" });
+  } catch {
+    return null;
+  }
+}
+
+export async function getTVShowCredits(id: string): Promise<Credits> {
+  try {
+    return await fetchTMDB<Credits>(`/tv/${id}/credits`, { language: "en-US" });
+  } catch {
+    return {
+      id: parseInt(id),
+      cast: [],
+      crew: [],
+    };
+  }
+}
+
+export async function getSimilarTVShows(id: string): Promise<TVShowsResponse> {
+  try {
+    return await fetchTMDB<TVShowsResponse>(`/tv/${id}/similar`, { language: "en-US" });
+  } catch {
+    return {
+      page: 1,
+      results: [],
+      total_pages: 1,
+      total_results: 0,
+    };
+  }
+}
+
+export async function searchTVShows(query: string, page: number = 1): Promise<TVShowsResponse> {
+  try {
+    return await fetchTMDB<TVShowsResponse>("/search/tv", {
+      language: "en-US",
+      query,
+      page: page.toString(),
+    });
+  } catch {
+    return {
+      page: 1,
+      results: [],
+      total_pages: 1,
+      total_results: 0,
+    };
+  }
+}
+
+export async function getPersonDetails(id: string): Promise<{
+  id: number;
+  name: string;
+  biography: string;
+  birthday: string | null;
+  deathday: string | null;
+  place_of_birth: string | null;
+  profile_path: string | null;
+  known_for_department: string;
+  popularity: number;
+} | null> {
+  try {
+    return await fetchTMDB(`/person/${id}`, { language: "en-US" });
+  } catch {
+    return null;
+  }
+}
+
+export async function getPersonMovieCredits(id: string): Promise<{
+  id: number;
+  cast: Movie[];
+  crew: Movie[];
+}> {
+  try {
+    return await fetchTMDB(`/person/${id}/movie_credits`, { language: "en-US" });
+  } catch {
+    return { id: parseInt(id), cast: [], crew: [] };
+  }
+}
+
+export async function getPersonTVCredits(id: string): Promise<{
+  id: number;
+  cast: TVShow[];
+  crew: TVShow[];
+}> {
+  try {
+    return await fetchTMDB(`/person/${id}/tv_credits`, { language: "en-US" });
+  } catch {
+    return { id: parseInt(id), cast: [], crew: [] };
   }
 }

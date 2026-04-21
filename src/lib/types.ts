@@ -12,6 +12,41 @@ export interface Movie {
   original_language: string;
   original_title: string;
   popularity: number;
+  media_type?: "movie" | "tv";
+}
+
+export interface TVShow {
+  id: number;
+  name: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  overview: string;
+  first_air_date: string;
+  vote_average: number;
+  vote_count: number;
+  genre_ids: number[];
+  original_language: string;
+  original_name: string;
+  popularity: number;
+  media_type?: "movie" | "tv";
+}
+
+export interface TVShowDetails extends TVShow {
+  runtime: number | null;
+  genres: { id: number; name: string }[];
+  episode_run_time: number[];
+  status: string;
+  tagline: string | null;
+  number_of_episodes: number;
+  number_of_seasons: number;
+  seasons: {
+    season_number: number;
+    name: string;
+    overview: string;
+    poster_path: string | null;
+    episode_count: number;
+    air_date: string;
+  }[];
 }
 
 export interface MovieDetails extends Movie {
@@ -53,6 +88,13 @@ export interface SearchResponse {
 export interface MoviesResponse {
   page: number;
   results: Movie[];
+  total_pages: number;
+  total_results: number;
+}
+
+export interface TVShowsResponse {
+  page: number;
+  results: TVShow[];
   total_pages: number;
   total_results: number;
 }

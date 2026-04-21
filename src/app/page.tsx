@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getTrendingMovies, getPopularMovies, getTopRatedMovies, getNowPlayingMovies } from "@/lib/tmdb";
 import { HeroSection } from "@/components/HeroSection";
 import { MovieGrid } from "@/components/MovieGrid";
+import { RecentlyWatchedSection } from "@/components/RecentlyWatchedSection";
 import { Play, Tv, Zap } from "lucide-react";
 
 export default async function Home() {
@@ -22,6 +23,8 @@ export default async function Home() {
       <HeroSection movie={featuredMovie} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+        <RecentlyWatchedSection />
+
         <section>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl sm:text-3xl font-bold font-display text-white tracking-wide">
