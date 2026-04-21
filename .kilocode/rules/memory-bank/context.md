@@ -8,6 +8,8 @@ The Cineverse movie app is fully functional with TMDB API integration. It displa
 
 ## Recently Completed
 
+- [x] **Improved home page with additional sections** (Now Playing, quick links to Stream/Free pages)
+- [x] **Enhanced player close functionality** (Escape key, click outside to close, body scroll lock)
 - [x] SPEC.md created with full movie app specification
 - [x] Dependencies installed (lucide-react for icons)
 - [x] TypeScript types created (`src/lib/types.ts`)
@@ -58,8 +60,10 @@ The Cineverse movie app is fully functional with TMDB API integration. It displa
 
 1. **Home Page**
    - Hero section with featured movie
+   - Now Playing section
    - Popular movies grid
    - Top rated movies grid
+   - Quick links to Stream and Free pages
    - Free Movies link in navigation
 
 2. **Free Movies Page**
