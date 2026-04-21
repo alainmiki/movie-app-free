@@ -1,4 +1,4 @@
-import { getPlutoMovies, getTubiMovies, getArchiveMovies, getYoutubeMovies, searchMovies, getMoviesByGenre, StreamingMovie } from "@/lib/streaming";
+import { getPlutoMovies, getTubiMovies, getArchiveMovies, getYoutubeMovies, getCrackleMovies, getPopcornflixMovies, searchMovies, getMoviesByGenre, StreamingMovie } from "@/lib/streaming";
 import { StreamingClient } from "@/components/StreamingClient";
 
 interface StreamingPageProps {
@@ -31,18 +31,20 @@ export default async function StreamingPage({ searchParams }: StreamingPageProps
     movies = result.movies;
     total = result.total;
   } else {
-    const [pluto, tubi, archive, youtube] = await Promise.all([
+    const [pluto, tubi, archive, youtube, crackle, popcornflix] = await Promise.all([
       getPlutoMovies(currentPage, limit),
       getTubiMovies(currentPage, limit),
       getArchiveMovies(currentPage, limit),
       getYoutubeMovies(currentPage, limit),
+      getCrackleMovies(currentPage, limit),
+      getPopcornflixMovies(currentPage, limit),
     ]);
 
     let allMovies: StreamingMovie[] = [];
     
     if (activeTab === "all") {
-      allMovies = [...pluto.movies, ...tubi.movies, ...archive.movies, ...youtube.movies];
-      total = pluto.total + tubi.total + archive.total + youtube.total;
+      allMovies = [...pluto.movies, ...tubi.movies, ...archive.movies, ...youtube.movies, ...crackle.movies, ...popcornflix.movies];
+      total = pluto.total + tubi.total + archive.total + youtube.total + crackle.total + popcornflix.total;
     } else if (activeTab === "pluto") {
       allMovies = pluto.movies;
       total = pluto.total;
@@ -55,6 +57,12 @@ export default async function StreamingPage({ searchParams }: StreamingPageProps
     } else if (activeTab === "youtube") {
       allMovies = youtube.movies;
       total = youtube.total;
+    } else if (activeTab === "crackle") {
+      allMovies = crackle.movies;
+      total = crackle.total;
+    } else if (activeTab === "popcornflix") {
+      allMovies = popcornflix.movies;
+      total = popcornflix.total;
     }
     
     movies = allMovies;
@@ -64,7 +72,9 @@ export default async function StreamingPage({ searchParams }: StreamingPageProps
   const totalTubi = 400;
   const totalArchive = 400;
   const totalYoutube = 400;
-  const totalAll = totalPluto + totalTubi + totalArchive + totalYoutube;
+  const totalCrackle = 400;
+  const totalPopcornflix = 400;
+  const totalAll = totalPluto + totalTubi + totalArchive + totalYoutube + totalCrackle + totalPopcornflix;
 
   return (
     <StreamingClient 
@@ -75,15 +85,15 @@ export default async function StreamingPage({ searchParams }: StreamingPageProps
       movies={movies}
       totalMovies={total}
       totalPages={Math.ceil(total / limit)}
-allMoviesCount={{
-              all: totalAll,
-              archive: totalArchive,
-              youtube: totalYoutube,
-              pluto: totalPluto,
-              tubi: totalTubi,
-              crackle: totalArchive,
-              popcornflix: totalTubi,
-            }}
+      allMoviesCount={{
+        all: totalAll,
+        archive: totalArchive,
+        youtube: totalYoutube,
+        pluto: totalPluto,
+        tubi: totalTubi,
+        crackle: totalCrackle,
+        popcornflix: totalPopcornflix,
+      }}
     />
   );
 }
